@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Alegreya|Ubuntu|Satisfy&display=swap');
 
-:root{
+:root {
 
     /* --pageBG: hsla(210, 89%, 21%, 89%); */
     --pageBG: hsla(210, 89%, 4%, 89%);
@@ -39,6 +39,7 @@
     --mcx: hsl(var(--cx), 50%, 50%);
     --glow-x: hsla(var(--cx), 50%, 50%, 40%);
     --bcx: hsla(var(--cx), 60%, 10%, 100%);
+    
 
     --titleBG: hsla(210, 89%, 12%, 89%);
     
@@ -58,6 +59,23 @@ body {
     color: var(--pageTxt);
     font-family: 'Ubuntu', sans-serif;
     margin: 0;
+}
+
+::-webkit-scrollbar {
+    height: 0px;
+    width: 0px;
+}
+::-webkit-scrollbar-track {
+    /* box-shadow: inset 0 0 6px rgba(200, 0, 0, 0.8); */
+    box-shadow: inset 0 0 6px rgba(200, 0, 0, 0.0);
+}
+::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 180, 180, 0.0);
+    /* outline: 1px solid rgba(80, 0, 80, 0.8); */
+    border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.7);;
 }
 
 header{
@@ -116,6 +134,8 @@ header{
     font-weight 250ms ease-in-out
     text-shadow 250ms ease-in-out; 
 }
+
+
 
 
 
