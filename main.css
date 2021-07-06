@@ -6,37 +6,51 @@
     --pageBG: hsla(210, 89%, 4%, 89%);
     --pageTxt: hsla(0, 0%, 100%, 89%);
 
-    /* Color */
-    --hc0: hsla(36, 100%, 50%, 100%);
-    --hc1: hsla(72, 100%, 50%, 100%);
-    --hc2: hsla(108, 100%, 50%, 100%);
-    --hc3: hsla(144, 100%, 50%, 100%);
-    --hc4: hsla(180, 100%, 50%, 100%);
-    --hc5: hsla(216, 100%, 50%, 100%);
-    --hc6: hsla(252, 100%, 50%, 100%);
-    --hc7: hsla(288, 100%, 50%, 100%);
-    --hc8: hsla(324, 100%, 50%, 100%);
-    --hc9: hsla(360, 100%, 50%, 100%);
+    /* Dimensions */
+    --h: 150px;
+    --w: 150px;
 
-    --c0: hsla(36, 50%, 50%, 100%);
-    --c1: hsla(72, 50%, 50%, 100%);
-    --c2: hsla(108, 50%, 50%, 100%);
-    --c3: hsla(144, 50%, 50%, 100%);
-    --c4: hsla(180, 50%, 50%, 100%);
-    --c5: hsla(216, 50%, 50%, 100%);
-    --c6: hsla(252, 50%, 50%, 100%);
-    --c7: hsla(288, 50%, 50%, 100%);
-    --c8: hsla(324, 50%, 50%, 100%);
-    --c9: hsla(360, 50%, 50%, 100%);
+    /* Color */
+    --clr-0: hsla(36, 70%, 50%, 100%);
+    --clr-1: hsla(72, 70%, 50%, 100%);
+    --clr-2: hsla(108, 70%, 50%, 100%);
+    --clr-3: hsla(144, 70%, 50%, 100%);
+    --clr-4: hsla(180, 70%, 50%, 100%);
+    --clr-5: hsla(216, 70%, 50%, 100%);
+    --clr-6: hsla(252, 70%, 50%, 100%);
+    --clr-7: hsla(288, 70%, 50%, 100%);
+    --clr-8: hsla(324, 70%, 50%, 100%);
+    --clr-9: hsla(360, 70%, 50%, 100%);
+
+    /* Advance Color */
+    --c0: 36;
+    --c1: 72;
+    --c2: 108;
+    --c3: 144;
+    --c4: 180;
+    --c5: 216;
+    --c6: 252;
+    --c7: 288;
+    --c8: 324;
+    --c9: 360;
+
+    --cx: 200;
+    --hcx: hsla(var(--cx), 100%, 50%, 100%);
+    --mcx: hsl(var(--cx), 50%, 50%);
+    --glow-x: hsla(var(--cx), 50%, 50%, 40%);
+    --bcx: hsla(var(--cx), 60%, 10%, 100%);
 
     --titleBG: hsla(210, 89%, 12%, 89%);
     
-    --light1: #3fbfbf;
-    --light2: #3bb;
-    --light3: #0af;
-    --light4: hsl(200, 100%, 50%);
-    --cx: hsl(200, 100%, 50%);
-
+    /* my defaults. */
+    --text-clr: rgb(240, 240, 240);
+    --bgi-to-replace: linear-gradient(#1230, #4560, #7890);
+    --bg-to-replace: #456;
+    --border-to-replace: #789;
+    --txteff-to-replace: 0 0 0 transparent;
+    --boxeff-to-replace: 0 0 0 0 transparent;
+    --txtclr-to-replace: var(--text-clr);
+    --transform-to-replace: scale(1);
 }
 
 body {
@@ -77,17 +91,104 @@ header{
     height: auto;
     width: max-content;
     margin: 0 auto;
-    /* border: 2px solid var(--cx); */
-    border-radius: 10px;
+    border: 4px double var(--hcx);
+    border-radius: 5px;
     background: #fff0;
     background-image: radial-gradient(hsla(200, 100%, 50%, 0%), hsla(200, 100%, 50%, 10%), hsla(200, 100%, 50%, 50%));
     padding: 4px 8px;
+    cursor: pointer;
+    text-shadow: 0px 0px 0px transparent;
+}
+.nav-btn:hover {
+    box-shadow: inset 0 0 0px 100px #0aff,
+        inset 0 0 0px 1px #0aff,
+        inset 0 0 2px 1px #0afa,
+        inset 0 0 4px 1px #0af5,
+        inset 0 0 10px 5px #0af2,
+        0 0 0px 1px #0aff,
+        0 0 2px 2px #0afa,
+        0 0 4px 3px #0af5,
+        0 0 10px 5px #0af2;
+
+    text-shadow: 1px 1px 1px #000;
+    font-weight: 600;
+    transition: box-shadow 250ms ease-in-out, 
+    font-weight 250ms ease-in-out
+    text-shadow 250ms ease-in-out; 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.test {
+    height: var(--h);
+    width: var(--w);
+    
+    padding: 8px;
+    border-radius: 10px;
+
+    background: #fff0;
     box-shadow:
         inset 0 0 0px 1px #0aff,
         inset 0 0 2px 1px #0afa,
         inset 0 0 4px 1px #0af5,
+        inset 0 0 10px 5px #0af2,
         0 0 0px 1px #0aff,
         0 0 2px 2px #0afa,
-        0 0 4px 3px #0af5;
-    /* color: var(--cx); */
+        0 0 4px 3px #0af5,
+        0 0 10px 5px #0af2;
+
+    position: relative;
+    top: 100px; left: 100px;
+}
+
+.test2 {
+    height: var(--h);
+    width: var(--w);
+    
+    padding: 8px;
+    border-radius: 10px;
+
+    background: #fff0;
+
+    box-shadow: 50px 0 0 10px hsla(180, 100%, 50%, 50%),
+                0 50px 0 20px hsla(300, 100%, 50%, 50%),
+                0 0 0 40px hsla(60, 100%, 50%, 50%);
+
+    position: relative;
+    top: 200px; left: 100px;
 }
