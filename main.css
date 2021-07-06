@@ -1,0 +1,93 @@
+@import url('https://fonts.googleapis.com/css?family=Alegreya|Ubuntu|Satisfy&display=swap');
+
+:root{
+
+    /* --pageBG: hsla(210, 89%, 21%, 89%); */
+    --pageBG: hsla(210, 89%, 4%, 89%);
+    --pageTxt: hsla(0, 0%, 100%, 89%);
+
+    /* Color */
+    --hc0: hsla(36, 100%, 50%, 100%);
+    --hc1: hsla(72, 100%, 50%, 100%);
+    --hc2: hsla(108, 100%, 50%, 100%);
+    --hc3: hsla(144, 100%, 50%, 100%);
+    --hc4: hsla(180, 100%, 50%, 100%);
+    --hc5: hsla(216, 100%, 50%, 100%);
+    --hc6: hsla(252, 100%, 50%, 100%);
+    --hc7: hsla(288, 100%, 50%, 100%);
+    --hc8: hsla(324, 100%, 50%, 100%);
+    --hc9: hsla(360, 100%, 50%, 100%);
+
+    --c0: hsla(36, 50%, 50%, 100%);
+    --c1: hsla(72, 50%, 50%, 100%);
+    --c2: hsla(108, 50%, 50%, 100%);
+    --c3: hsla(144, 50%, 50%, 100%);
+    --c4: hsla(180, 50%, 50%, 100%);
+    --c5: hsla(216, 50%, 50%, 100%);
+    --c6: hsla(252, 50%, 50%, 100%);
+    --c7: hsla(288, 50%, 50%, 100%);
+    --c8: hsla(324, 50%, 50%, 100%);
+    --c9: hsla(360, 50%, 50%, 100%);
+
+    --titleBG: hsla(210, 89%, 12%, 89%);
+    
+    --light1: #3fbfbf;
+    --light2: #3bb;
+    --light3: #0af;
+    --light4: hsl(200, 100%, 50%);
+    --cx: hsl(200, 100%, 50%);
+
+}
+
+body {
+    background-color: var(--pageBG);
+    color: var(--pageTxt);
+    font-family: 'Ubuntu', sans-serif;
+    margin: 0;
+}
+
+header{
+    width: 100vw;
+    /* display: grid;
+    grid-auto-flow: column;
+    grid-gap: 12px; */
+    box-shadow: 0px 4px 4px #1119;
+    padding: 4px 0;
+    background: var(--titleBG);
+}
+.title {
+    font-size: 24px;
+    font-weight: 600;
+    padding-left: 12px;
+    margin-bottom: 8px;
+}
+.nav {
+    height: auto;
+    width: 80%;
+    margin: 0 auto;
+    display: grid;
+    grid-auto-flow: column;
+    grid-gap: 0px;
+    /* border: 4px double var(--c8); */
+    /* border-left: 0px; */
+    /* border-right: 0px; */
+}
+
+.nav-btn {
+    height: auto;
+    width: max-content;
+    margin: 0 auto;
+    /* border: 2px solid var(--cx); */
+    border-radius: 10px;
+    background: #fff0;
+    background-image: radial-gradient(hsla(200, 100%, 50%, 0%), hsla(200, 100%, 50%, 10%), hsla(200, 100%, 50%, 50%));
+    padding: 4px 8px;
+    box-shadow:
+        inset 0 0 0px 1px #0aff,
+        inset 0 0 2px 1px #0afa,
+        inset 0 0 4px 1px #0af5,
+        0 0 0px 1px #0aff,
+        0 0 2px 2px #0afa,
+        0 0 4px 3px #0af5;
+    /* color: var(--cx); */
+}
