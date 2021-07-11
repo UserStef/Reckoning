@@ -29,52 +29,82 @@
 
 
     /* Current */
-    --xa-w: 79vw;
-    --xa-cols: 9vw repeat(7, 10vw);
+    /* --xa-w: 79vw; */
+    /* --xa-cols: 9vw repeat(7, 10vw); */
+
+    /* --xahs-w: 9vw; */
+    /* --xas-w: 10vw; */
+
+    --xa-w: 790px;
+    --xa-cols: 90px repeat(7, 100px);
+
+    --xahs-w: 90px;
+    --xas-w: 100px;
+
+    --xa-h: calc(100vh - 60px);
 }
 
 
 
 .xa {
     outline: 1px solid var(--glow-x);
-    /* height: 50vh; width: 50vw; */
-    height: 85vh; width: var(--xa-w);
+    height: var(--xa-h); width: var(--xa-w);
     margin: 12px auto;
     background: var(--bcx);
     overflow: scroll;
 }
 .xaw {
-    /* outline: 1px solid var(--glow-x); */
-    /* height: 50vh; width: 50vw; */
-    height: 85vh; width: var(--xa-w);
+    height: var(--xa-h); width: var(--xa-w);
     margin: 0 auto;
-    /* background: var(--bcx); */
 
     display: grid;
     grid-template-columns: var(--xa-cols);
     grid-gap: 0px;
 }
-.xah {
-    outline: 1px solid #aaaa;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.xa--colh {
-    /* outline: 1px solid #fffc; */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-    font-weight: 600;
-    border-bottom: 1px solid #fffc;
-    line-height: 1.5;
+
+.xaht {
+    height: 28px;
+    overflow: hidden;
 }
 
+.xah,
+.xa--colh {
+    position: relative;
+    top: 0px;
+    left: 0%;
+
+    height: var(--xai-h);
+    padding: 4px 0px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.xah {
+    box-shadow: inset -1px -1px 1px #fff5;
+}
+.xa--colh {
+    font-size: 16px;
+    font-weight: 600;
+    box-shadow: inset 0 -1px 0 #fffc, 
+                inset -1px 0 0 #fff7;
+    line-height: 1.5;
+}
+/* .xah:hover,
+.xa--colh:hover {
+    transform: translateX(-100%);
+    transition: transform 100ms ease-in-out;
+} */
+/* .xa--colh > .xas {
+    font-size: 16px;
+    font-weight: 200;
+    box-shadow: 0 1px 0 #fff5;
+    line-height: 1;
+} */
+/* .xags {
+} */
+
 .xaic{
-    cursor: pointer;
-    outline: 1px solid #0af9;
-    /* padding: 0px 2px; */
     height: 28px;
     overflow: hidden;
 }
@@ -83,13 +113,11 @@
     top: 0px;
     left: 0%;
 
-    outline: 1px dashed #0af4;
-
     user-select: none;
     
     color: #fff;
     text-shadow: var(--shadow-txt);
-    height: 20px;
+    height: var(--xai-h);
     /* width: max-content; */
     /* margin: 4px auto; */
     padding: 4px 0px;
@@ -98,9 +126,11 @@
     border: 0px dashed var(--xa-b);
     background-color: var(--xa-bg);
     transition: transform 100ms ease-in-out;
+    text-overflow: ellipsis;
+    
+    box-shadow: inset -1px -1px 0px #0005;
 }
 .xai:hover {
-    /* transform: translateX(-150%); */
     transform: translateX(-100%);
     transition: transform 100ms ease-in-out;
 }
@@ -119,33 +149,47 @@
 .xa-5 { --xa-bg: var(--xa-5); }
 
 
-
 .xas {
     position: absolute;
-    /* top: calc(var(--xai-m) * -1); */
-    /* left: calc(100% + 22px); */
     top: 0;
     left: 100%;
 
     margin: 0px;
-    height: 20px; width: var(--xai-w);
+    height: var(--xai-h); width: var(--xas-w);
     padding: 4px 0px;
-    padding: 4px calc((10vw - 100px)/2);
 
-    cursor: pointer;
     user-select: none;
 
     display: flex;
+    align-items: center;
+    justify-content: center;
     
     color: white;
     border: 0px dashed var(--xa-b);
     background-color: var(--xa-bg);
+
+    box-shadow: inset -1px -1px 0px #0005;
+}
+
+.xah .xas,
+.xa--colh .xas {
+    height: var(--xai-h);
+    z-index: 1;
+}
+
+.xah .xas {
+    width: 90px;
+}
+.xa--colh .xas {
+    width: 100px;
 }
 
 div[class|="xa-btn"]{
     height: 18px; width: 18px;
     background-color: var(--xa-bg);
     margin: 1px;
+    text-align: center;
+    cursor: pointer;
     transform: scale(1.0);
     transition: transform 100ms ease-in-out;
 }
@@ -158,3 +202,11 @@ div[class|="xa-btn"]:hover{
 .xa-btn-2{ --xa-bg: var(--xa-2); }
 .xa-btn-3{ --xa-bg: var(--xa-3); }
 .xa-btn-4{ --xa-bg: var(--xa-4); }
+
+
+
+.xa-0 .xa-btn-0 { display: none; }
+.xa-1 .xa-btn-1 { display: none; }
+.xa-2 .xa-btn-2 { display: none; }
+.xa-3 .xa-btn-3 { display: none; }
+.xa-4 .xa-btn-4 { display: none; }

@@ -100,7 +100,7 @@ header{
     font-size: 24px;
     font-weight: 600;
     padding-left: 12px;
-    margin-bottom: 8px;
+    /* margin-bottom: 8px; */
 }
 .nav {
     height: auto;
@@ -236,41 +236,4 @@ header{
 
     position: relative;
     top: 200px; left: 100px;
-}
-
-
-
-
-
-
-
-
-/* End of Page */
-.btmspace{
-    height: 89px;
-    width: 100%;
-    user-select: none;
-}
-.name-end{
-    position: fixed;
-    bottom: 5px;
-    right: 12px;
-    color: hsla(210, 89%, 29%, 5%);
-    font-size: 24pt;
-    font-family: 'Satisfy', cursive;
-    user-select: none;
-    transition: color .5s ease-out;
-}
-.name-end:hover{
-    position: fixed;
-    bottom: 5px;
-    right: 12px;
-    color: hsla(210, 89%, 29%, 50%);
-    font-size: 24pt;
-    font-family: 'Satisfy', cursive;
-    user-select: none;
-    transition: color 1s ease-out 2s;
-}
-.hidden{
-    display: none;
 }

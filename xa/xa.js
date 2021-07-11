@@ -1,10 +1,10 @@
 'use strict';
-// localStorage.removeItem("preferences");
-// localStorage.removeItem("xalist");
-
-
 console.log(" -- Start of script -- ");
 
+/* User Data. */
+var data = {};
+
+/* Current Time. */
 var xo = new Date(Date.now());
 
 const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
@@ -24,22 +24,20 @@ const availability = {
 
 var xaContainer = document.getElementById('xa');
 
-var currentlyDisplaying = '';
-var Adventurer = '';
+var Adventurer = ''; /* Name of the User */
+var CurrentView = ''; /* What view they are looking at. */
+var xaDisplaying = ''; /* Which of their Availability Schedules they are seeing. */
+
 
 let xa4 = `2,,0,,,,,,2,313,,323,3,232,,3,,232,,3133333,3133133,3233133,3222122,`;
 let xaTable = [];
-let my_xa = {};
+let xaList = {};
 
-const default_xa = {
-    "sleep": [23,7],
-    "meals": [8,13,18],
-    "scheduled": []
-}
 
 function Load_fromLocal(key) {
-    if (localStorage.getItem(key)) {
-        data[key] = JSON.parse(localStorage.getItem(key));
+    let project_key = `reckoning-${key}`;
+    if (localStorage.getItem(project_key)) {
+        data[key] = JSON.parse(localStorage.getItem(project_key));
         console.log(`♦ {${key}} found.`);
         return true;
     } else {
@@ -48,7 +46,8 @@ function Load_fromLocal(key) {
     }
 }
 function Save_toLocal(key) {
-    localStorage.setItem(key, JSON.stringify(data[key]));
+    let project_key = `reckoning-${key}`;
+    localStorage.setItem(project_key, JSON.stringify(data[key]));
     console.log(`♦ {${key}} has been saved.`);
 }
 
@@ -128,20 +127,55 @@ function MyTimeF(xc){
     return `${h}:${xc.getMinutes()} ${ampm}`
 }
 
+/** for titles like day of the week or hour row */
+function make_xait(day = -1, hour = -1){
+    
+    let xaht = document.createElement("div");
+    xaht.classList.add('xaht');
+
+    let xah = document.createElement("div");
+
+    if(hour == -1){
+        /* Add Column Heading. (Day of the Week) */
+        xah.classList.add('xa--colh');
+        xah.dataset.xgt = `xt-${day}`;
+        xah.innerHTML = `${day}`;
+    }
+    if(day == -1){
+        /* Add Row Index. (Hours) */
+        xah.classList.add('xah');
+        xah.dataset.xgt = `xt-${hour}`;
+        xah.innerHTML = getAMPM(hour);
+    }
+
+    // /* `xas` = the availability selector. */
+    // /* `xag` = the group availability selector. */
+    // let xaSelect = document.createElement("div");
+    // xaSelect.classList.add('xas');
+    // xaSelect.innerHTML = `
+    // <div class="xa-btn-0" data-xags="0">0</div>
+    // <div class="xa-btn-1" data-xags="1">1</div>
+    // <div class="xa-btn-2" data-xags="2">2</div>
+    // <div class="xa-btn-3" data-xags="3">3</div>
+    // <div class="xa-btn-4" data-xags="4">4</div>`
+
+    // xah.appendChild(xaSelect);
+    xaht.appendChild(xah);
+    return xaht;
+}
 function make_xai(day, hour, avail = -1){
     
     let xai = document.createElement("div");
     xai.classList.add('xai', `xa-${avail}`);
-    xai.innerHTML = availability[avail];
+    xai.innerHTML = `<div>${availability[avail]}</div>`;
     // xai.id = `xai-${day}-${hour}`;
+    xai.dataset.xaid = `${day}-${hour}`;
+    xai.dataset.avail = avail;
 
 
     // `xas` = the availability selector.
     let xaSelect = document.createElement("div");
     xaSelect.classList.add('xas');
-    // xaSelect.dataset.avail = avail;
-    xaSelect.dataset.xaid = `${day}-${hour}`;
-    // xaSelect.dataset.xasid = `xai-${day}-${hour}`;
     xaSelect.innerHTML = `
     <div class="xa-btn-0" data-xas="0">0</div>
     <div class="xa-btn-1" data-xas="1">1</div>
@@ -163,22 +197,17 @@ function Make_xaTable(){
     xahh.innerHTML = `Hours`;
     xaw.appendChild(xahh);
     weekdays.forEach(d =>{
-        let xa_colh = document.createElement("div");
-        xa_colh.classList.add('xa--colh');
-        xa_colh.innerHTML = `${d}`;
+        let xa_colh = make_xait(d);
+
         xaw.appendChild(xa_colh);
     });
 
-    // console.log(`Object.keys(xc): ${Object.keys(xc)}`)
     Object.keys(xc).forEach(h => {
         let hour = getAXh(h);
-        // console.log(hour);
 
         /* Add Column for Hours */
-        let xah = document.createElement("div");
-        xah.classList.add('xah');
-        // xah.innerHTML = `${h} hrs`;
-        xah.innerHTML = getAMPM(h);
+        let xah = make_xait(-1, h);
+
         xaw.appendChild(xah);
 
         Object.keys(xc[h]).forEach(d =>{
@@ -199,30 +228,28 @@ function Make_xaTable(){
 }
 
 
-
 function update_xai(id, avail){
     let xaic = document.getElementById(`xaic-${id}`);
-    xaic.innerHTML = ``;
-    // console.log(`day: ${id.split('-')[0]}`);
-    // console.log(`hour: ${id.split('-')[1]}`);
+    let xai = xaic.children[0];
+
+    console.log(xai);
+    let before_avail = xai.dataset.avail;
+    xai.classList.remove(`xa-${before_avail}`);
+    xai.classList.add(`xa-${avail}`);
+
+    xai.dataset.avail = avail;
+    xai.children[0].innerHTML = availability[avail];
+
     let day = weekdays.indexOf(id.split('-')[0]);
     console.log(`day: ${day}`);
     let hour = getHour(id.split('-')[1]);
     console.log(`hour: ${hour}`);
 
-    // console.log(`avail: ${avail}`);
-    // console.log(`my_xa: ${my_xa[currentlyDisplaying]}`);
-    console.log(`my_xa → [${hour}]: ${my_xa[currentlyDisplaying][hour]}`);
 
-    // console.log(`from: ${my_xa[currentlyDisplaying][hour][day]}`);
-    my_xa[currentlyDisplaying][hour][day] = avail;
-    console.table(my_xa[currentlyDisplaying]);
-    // console.log(`to: ${my_xa[currentlyDisplaying][hour][day]}`);
-    // console.log(my_xa[currentlyDisplaying]);
+    console.log(`xaList → [${hour}]: ${xaList[xaDisplaying][hour]}`);
 
-    // console.log(`getHour(h): ${hour}`);
-    let xai = make_xai(id.split('-')[0], id.split('-')[1], avail);
-    xaic.appendChild(xai);
+    xaList[xaDisplaying][hour][day] = avail;
+    console.table(xaList[xaDisplaying]);
 }
 function Update_xaTable(xc){
     Object.keys(xc).forEach(h => {
@@ -237,41 +264,75 @@ function Update_xaTable(xc){
     })
 }
 
+function update_xag(query_id, avail){
+    let xag = document.querySelectorAll(`.${query_id}`);
+    console.log(xag);
+    
+    xag.forEach(xagic => {
+        // let xai = xagic.children[0];
+        // console.log(xai);
 
+        let id = xagic.id;
+
+        update_xai(id, avail);
+    });
+    Update_xaData();
+}
+
+
+function xaMakeDefault(){
+    // let xc = ('0'.repeat(7)+',').repeat(24).slice(0,191).split(',').map(x=>x.split(''));
+    let xc = Build_xaBlock(0,24);
+    console.log(xc);
+}
+
+
+
+
+
+function Build_xaBlock(avail, h, d = 7){
+    if(h > 24) { h = 24 };
+    let day_s = ',';
+    let day_add = avail+day_s; let week_add = ';\n'
+    let days = d; let hours = h; let excess = day_s+week_add;
+    let slice_up_to = (((day_add.length*days)+week_add.length)*hours)-excess.length;
+    let xaBlock = (day_add.repeat(days)+week_add).repeat(hours).slice(0,slice_up_to).split(excess).map(x=>x.split(day_s));
+    // console.log(xaBlock);
+    return xaBlock;
+}
+function Build_xaArray(sleep = [0,7], meals = [8,13,18]){
+    let sleeping_for = sleep[1] - sleep[0];
+
+    let sleep_rows = Build_xaBlock(0,sleeping_for);
+    let awake_rows = Build_xaBlock(3,17);
+    
+    let day = sleep_rows.concat(awake_rows);
+
+    meals.forEach(h => {
+        day[h-1] = Build_xaBlock(2,1)[0];
+    });
+
+    return day;
+}
+
+const default_xa = {
+    "sleep": [0,7],
+    "meals": [8,13,18],
+    "scheduled": []
+}
+function Build_xaDefault(){
+    Build_xaArray(default_xa['sleep'], default_xa['meals']);
+
+    return day;
+}
 
 
 
 
 window.addEventListener("click", (ev) =>{
-    // if(ev.target.dataset.avail != null){
-    //     console.log(" ── 📯Click! - Select🔘 ── ");
-    // }
+    /* Navigation */
     if(ev.target.dataset.nav == "home"){
         console.log(" ── Navigating back: 💠 Home 📍 ── ");
-        
-    }
-    if(ev.target.dataset.nav == "xa"){
-        console.log(" ── Navigation to: 💠 Availability 📍 ── ");
-        xaContainer.appendChild(Make_xaTable());
-
-        // if(data['preferences']) {
-        //     console.log(true);
-        // } else { console.log(false); }
-
-        if(Load_fromLocal("xa")){
-            Update_xaTable(xaTable);
-            xaContainer.classList.remove('hidden');
-        }
-        else {
-            xaTable = table_xa(xa4);
-            console.table(xaTable);
-            if(currentlyDisplaying == ''){
-                WhoAreYou();
-            }
-            my_xa[currentlyDisplaying] = xaTable;
-            Update_xaTable(xaTable);
-            xaContainer.classList.remove('hidden');
-        }
     }
 
     if(ev.target.dataset.new == "xa"){
@@ -284,87 +345,110 @@ window.addEventListener("click", (ev) =>{
         welcome.classList.toggle('hidden');
     }
 
+
     if(ev.target.dataset.xas != null){
         let xaSelection = ev.target.dataset.xas;
-        // console.log(` ── 📯Click! - Selection ${emoji_mark[xaSelection]} ── `);
         console.log(` ── 📯Click! - Selection ${xaSelection} ── `);
-        let xaid = ev.target.parentElement.dataset.xaid;
+        let xaid = ev.target.parentElement.parentElement.dataset.xaid;
         update_xai(xaid, xaSelection);
+        Update_xaData();
+    }
+
+    if(ev.target.dataset.xags != null){
+        let xaSelection = ev.target.dataset.xags;
+        console.log(` ── 📯Click! - Selection ${xaSelection} ── `);
+
+        let xgt = ev.target.parentElement.parentElement.dataset.xgt;
+        console.log(` ── xgt: ${xgt} ── `);
+        update_xag(xgt, xaSelection);
     }
 });
 
 function WhoAreYou(){
+    let AdventurerName = '';
     let name = window.prompt(`Before we continue, I need to ask, what's your name?`);
     if(name == null){
-        Adventurer = "Adventurer";
-        console.log(`No name?, ok, I'll call you ${Adventurer} then.`);
-        window.alert(`No name?, ok, I'll call you ${Adventurer} then.`);
+        AdventurerName = "Adventurer";
+        console.log(`No name?, ok, I'll call you ${AdventurerName} then.`);
+        window.alert(`No name?, ok, I'll call you ${AdventurerName} then.`);
     } else if(name.length == 7){
-        Adventurer = name;
-        console.log(`*gasps* Breathtaking. Nice to meet you ${Adventurer}!`);
+        AdventurerName = name;
+        console.log(`*gasps* Breathtaking. Nice to meet you ${AdventurerName}!`);
     } else if(name.length%2 == 0){
-        Adventurer = name;
-        console.log(`I like how it sounds. Nice to meet you ${Adventurer}!`);
+        AdventurerName = name;
+        console.log(`I like how it sounds. Nice to meet you ${AdventurerName}!`);
     } else {
-        Adventurer = name;
-        console.log(`Never heard of someone named ${Adventurer}. That is an odd name.`);
+        AdventurerName = name;
+        console.log(`Never heard of someone named ${AdventurerName}. That is an odd name.`);
     }
-    if(Adventurer != "Adventurer") {
-        console.log(`Achivement Complete: You are now known as ${Adventurer}.`);
+    if(AdventurerName != "Adventurer") {
+        console.log(`Achivement Complete: You are now known as ${AdventurerName}.`);
     }
-    currentlyDisplaying = Adventurer;
+    return AdventurerName;
 }
 
 window.addEventListener('load', async () =>{
     console.log(" -- Start of load event. -- ");
     console.log(`Current Day and Time: \n\t${xo.toLocaleString()}`);
 
-    // if(Load_fromLocal("preferences")){
-    //     console.log("Welcome back adventurer.");
-    //     WelcomeBackAdventurer();
-    // } else {
-    //     console.log("Welcome adventurer!");
-    //     WhoAreYou();
-    //     WelcomeAdventurer();
-    // }
-
     xaContainer.appendChild(Make_xaTable());
-    xaContainer.classList.remove('hidden');
+    if(Load_fromLocal("user")){
+        WelcomeBackAdventurer();
+        console.log(`Welcome back ${Adventurer}.`);
+    } else {
+        console.log("Welcome adventurer!");
+        setNewAdventurer();
+    }
+    Update_xaTable(xaList[xaDisplaying]);
+    xaContainer.classList.remove('hidden');    
 
-    xaTable = table_xa(xa4);
-    console.log(xaTable);
-
-    currentlyDisplaying = "Stef";
-    my_xa[currentlyDisplaying] = xaTable;
-    console.log(my_xa);
-
-    Update_xaTable(xaTable);
-
+    
 
     console.log(" -- End of load event. -- ");
 });
 
+function setNewAdventurer(){
+    Adventurer = WhoAreYou();
+    console.log(`Adventurer: ${Adventurer}.`);
+
+    xaDisplaying = Adventurer;
+    console.log(`xaDisplaying: ${xaDisplaying}`);
+    
+    data['user'] = {};
+    data['user']['CurrentView'] = 'xa';
+    data['user']['main_xa_id'] = Adventurer;
+    data['xaList'] = {};
+
+    xaList[xaDisplaying] = Build_xaArray();
+    console.log(xaList);
+
+    updateUser();
+}
+
+function updateUser(){
+    data['user']['name'] = Adventurer;
+    data['user']['xaDisplaying'] = xaDisplaying;
+    data['user']['main_xa'] = xaList[xaDisplaying];
+
+    data['xaList'] = xaList;
+    console.log(data);
+
+    Save_toLocal('user');
+    Save_toLocal('xaList');
+}
+
+function WelcomeBackAdventurer(){
+    Load_fromLocal('xaList');
+
+    Adventurer = data['user']['name']
+    xaDisplaying = data['user']['xaDisplaying'];
+    xaList = data['xaList'];
+}
 
 
+function Update_xaData(){
+    data['xaList'][xaDisplaying] = xaList[xaDisplaying];
+    Save_toLocal('xaList');
+}
 
 
-
-
-
-
-
-
-
-// window.addEventListener('load', async () =>{
-//     console.log(" -- Start of load event. -- ");
-
-//     let xai_list = document.querySelectorAll('.xai');
-//     xai_list.forEach(xai => {
-//         xai.innerHTML += `
-//         <div class="xai-h">${xai.offsetHeight}</div>
-//         <div class="xai-w">${xai.offsetWidth}</div>
-//         `;
-//     });
-
-//     console.log(" -- End of load event. -- ");
-// });
