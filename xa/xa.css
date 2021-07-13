@@ -12,9 +12,6 @@
 
 
     /* xa */
-    --xa-bg: #0000;
-    --xa-b: #0000;
-
     --xa--1: #2FF9;
     --xa-0: #111;
     --xa-1: #A33;
@@ -23,10 +20,44 @@
     --xa-4: #159;
     --xa-5: #82B;
 
-    --xai-h: 20px;
-    --xai-w: 100px;
-    --xai-m: 4px;
 
+    --xai-bg-l: 10%;
+    --xai-bg-0: hsla(0, 0%, 5%, 0.89);
+    --xai-bg-1: hsla(0, 54%, var(--xai-bg-l), 0.89);
+    --xai-bg-2: hsla(48, 83%, var(--xai-bg-l), 0.89);
+    --xai-bg-3: hsla(135, 67%, var(--xai-bg-l), 0.89);
+    --xai-bg-4: hsla(210, 80%, var(--xai-bg-l), 0.89);
+
+    --xai-txt-l: 70%;
+    --xai-txt-0: hsla(0, 0%, 54%, 89%);
+    --xai-txt-1: hsla(0, 54%, var(--xai-txt-l), 89%);
+    --xai-txt-2: hsla(48, 83%, var(--xai-txt-l), 89%);
+    --xai-txt-3: hsla(135, 67%, var(--xai-txt-l), 89%);
+    --xai-txt-4: hsla(210, 80%, var(--xai-txt-l), 89%);
+
+    --xas-btn-bg--1: #2FF1;
+    --xas-btn-bg-0: #111;
+    --xas-btn-bg-1: #A33;
+    --xas-btn-bg-2: #EC4;
+    --xas-btn-bg-3: #2A4;
+    --xas-btn-bg-4: #159;
+
+    --xas-tip-s: 80%;
+    --xas-tip-l: 60%;
+    --xas-tip-txt--1: hsla(180, 100%, 57%, 0.6);
+    --xas-tip-txt-0: hsla(0, 0%, 89%, 89%);
+    --xas-tip-txt-1: hsla(0, var(--xas-tip-s), var(--xas-tip-l), 89%);
+    --xas-tip-txt-2: hsla(48, var(--xas-tip-s), var(--xas-tip-l), 89%);
+    --xas-tip-txt-3: hsla(135, var(--xas-tip-s), var(--xas-tip-l), 89%);
+    --xas-tip-txt-4: hsla(210, var(--xas-tip-s), var(--xas-tip-l), 89%);
+
+    --xas-tip-bg-l: 10%;
+    --xas-tip-bg-a: 89%;
+    --xas-tip-bg-0: hsla(0, 0%, 5%, var(--xas-tip-bg-a));
+    --xas-tip-bg-1: hsla(0, 54%, var(--xas-tip-bg-l), var(--xas-tip-bg-a));
+    --xas-tip-bg-2: hsla(48, 83%, var(--xas-tip-bg-l), var(--xas-tip-bg-a));
+    --xas-tip-bg-3: hsla(135, 67%, var(--xas-tip-bg-l), var(--xas-tip-bg-a));
+    --xas-tip-bg-4: hsla(210, 80%, var(--xas-tip-bg-l), var(--xas-tip-bg-a));
 
     /* Current */
     /* --xa-w: 79vw; */
@@ -35,13 +66,38 @@
     /* --xahs-w: 9vw; */
     /* --xas-w: 10vw; */
 
-    --xa-w: 790px;
-    --xa-cols: 90px repeat(7, 100px);
 
-    --xahs-w: 90px;
-    --xas-w: 100px;
+    --xai-h: 24px;
+    --xai-w: 100px;
+    --xai-m: 4px;
 
     --xa-h: calc(100vh - 60px);
+    --xa-w: 800px;
+    --xa-cols: repeat(8, 100px);
+
+    --xahs-w: 100px;
+    --xas-w: 100px;
+
+
+    --xa-bg: #0000;
+    --xa-b: #0000;
+
+    --xas-btn-sz: 18px;
+    --xas-btn-m: -6px;
+    /* --xas-btn-m: calc(var(--xas-w) - (var(--xas-btn-sz)*5) - 4); */
+
+
+    /* xai: */
+    --xai-bg: var(--xai-bg-0); 
+    --xai-txt: var(--xai-txt-0); 
+
+    /* btn: */
+    --xas-btn-bg: var(--xas-btn-bg-0);
+    --xas-btn-txt: white;
+
+    /* tip: */
+    --xas-tip-bg: var(--xas-tip-bg-0);
+    --xas-tip-txt: var(--xas-tip-txt-0);
 }
 
 
@@ -63,7 +119,7 @@
 }
 
 .xaht {
-    height: 28px;
+    height: var(--xai-h);
     overflow: hidden;
 }
 
@@ -74,7 +130,6 @@
     left: 0%;
 
     height: var(--xai-h);
-    padding: 4px 0px;
 
     display: flex;
     align-items: center;
@@ -90,75 +145,59 @@
                 inset -1px 0 0 #fff7;
     line-height: 1.5;
 }
-/* .xah:hover,
-.xa--colh:hover {
-    transform: translateX(-100%);
-    transition: transform 100ms ease-in-out;
-} */
-/* .xa--colh > .xas {
-    font-size: 16px;
-    font-weight: 200;
-    box-shadow: 0 1px 0 #fff5;
-    line-height: 1;
-} */
-/* .xags {
-} */
+
 
 .xaic{
-    height: 28px;
-    overflow: hidden;
+    position: relative;
+    top: 0px;
+    height: var(--xai-h);
 }
 .xai {
     position: relative;
     top: 0px;
-    left: 0%;
 
-    user-select: none;
-    
-    color: #fff;
-    text-shadow: var(--shadow-txt);
     height: var(--xai-h);
-    /* width: max-content; */
-    /* margin: 4px auto; */
-    padding: 4px 0px;
+    width: var(--xai-w);
+
+    /* color: var(--xai-txt); */
+    color: white;
+    text-shadow: var(--shadow-txt);
     text-align: center;
+    text-overflow: ellipsis;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     border: 0px dashed var(--xa-b);
     background-color: var(--xa-bg);
-    transition: transform 100ms ease-in-out;
-    text-overflow: ellipsis;
+    /* background-color: var(--xai-bg); */
     
     box-shadow: inset -1px -1px 0px #0005;
-}
-.xai:hover {
-    transform: translateX(-100%);
-    transition: transform 100ms ease-in-out;
-}
 
+    user-select: none;
+}
 
 .xa-undefined, .xa--1{
     border: 1px dashed var(--xa-b);
     --xa-b: #2FF9;
     --xa-bg: #0000;
 }
-.xa-0 { --xa-bg: var(--xa-0); }
-.xa-1 { --xa-bg: var(--xa-1); }
-.xa-2 { --xa-bg: var(--xa-2); }
-.xa-3 { --xa-bg: var(--xa-3); }
-.xa-4 { --xa-bg: var(--xa-4); }
-.xa-5 { --xa-bg: var(--xa-5); }
+.xa-0 { --xa-bg: var(--xa-0); /* xai: */ --xai-bg: var(--xai-bg-0); --xai-txt: var(--xai-txt-0); }
+.xa-1 { --xa-bg: var(--xa-1); /* xai: */ --xai-bg: var(--xai-bg-1); --xai-txt: var(--xai-txt-1); }
+.xa-2 { --xa-bg: var(--xa-2); /* xai: */ --xai-bg: var(--xai-bg-2); --xai-txt: var(--xai-txt-2); }
+.xa-3 { --xa-bg: var(--xa-3); /* xai: */ --xai-bg: var(--xai-bg-3); --xai-txt: var(--xai-txt-3); }
+.xa-4 { --xa-bg: var(--xa-4); /* xai: */ --xai-bg: var(--xai-bg-4); --xai-txt: var(--xai-txt-4); }
+.xa-5 { --xa-bg: var(--xa-5); /* xai: */ --xai-bg: var(--xai-bg-5); --xai-txt: var(--xai-txt-5); }
 
 
 .xas {
     position: absolute;
-    top: 0;
-    left: 100%;
+    top: 0px;
+    left: 0px;
 
     margin: 0px;
     height: var(--xai-h); width: var(--xas-w);
-    padding: 4px 0px;
-
-    user-select: none;
 
     display: flex;
     align-items: center;
@@ -166,47 +205,98 @@
     
     color: white;
     border: 0px dashed var(--xa-b);
-    background-color: var(--xa-bg);
+    background-color: #0000;
 
     box-shadow: inset -1px -1px 0px #0005;
+
+    user-select: none;
 }
 
 .xah .xas,
 .xa--colh .xas {
     height: var(--xai-h);
-    z-index: 1;
 }
 
 .xah .xas {
     width: 90px;
+    width: var(--xai-w);
 }
 .xa--colh .xas {
     width: 100px;
 }
 
-div[class|="xa-btn"]{
-    height: 18px; width: 18px;
-    background-color: var(--xa-bg);
+.xaic div[class|="xas-btn"]{
+    position: relative; 
+    top: 0;
+    height: var(--xas-btn-sz); width: var(--xas-btn-sz);
+    background-color: var(--xas-bg);
     margin: 1px;
     text-align: center;
     cursor: pointer;
-    transform: scale(1.0);
+
+    transform-origin: 50% 100%;
+    transform: rotateY(30deg) rotateX(-90deg);
     transition: transform 100ms ease-in-out;
 }
-div[class|="xa-btn"]:hover{
-    transform: scale(1.1);
-    transition: transform 100ms ease-in-out;
+.xaic:hover div[class|="xas-btn"]{
+    transform: rotateY(0deg) rotateX(0deg);
+    transition: transform 200ms cubic-bezier(0.29, 0.02, 0.6, 2.1) 100ms;
 }
-.xa-btn-0{ --xa-bg: var(--xa-0); }
-.xa-btn-1{ --xa-bg: var(--xa-1); }
-.xa-btn-2{ --xa-bg: var(--xa-2); }
-.xa-btn-3{ --xa-bg: var(--xa-3); }
-.xa-btn-4{ --xa-bg: var(--xa-4); }
+
+.xas-btn-0{ --xas-bg: var(--xas-btn-bg-0); }
+.xas-btn-1{ --xas-bg: var(--xas-btn-bg-1); }
+.xas-btn-2{ --xas-bg: var(--xas-btn-bg-2); }
+.xas-btn-3{ --xas-bg: var(--xas-btn-bg-3); }
+.xas-btn-4{ --xas-bg: var(--xas-btn-bg-4); }
+
+
+.xas-btn-0{ 
+    /* btn: */ --xas-btn-bg: var(--xa-bg-0);
+    /* tip: */ --xas-tip-bg: var(--xas-tip-bg-0); --xas-tip-txt: var(--xas-tip-txt-0); }
+.xas-btn-1{ 
+    /* btn: */ --xas-btn-bg: var(--xa-bg-1);
+    /* tip: */ --xas-tip-bg: var(--xas-tip-bg-1); --xas-tip-txt: var(--xas-tip-txt-1); }
+.xas-btn-2{ 
+    /* btn: */ --xas-btn-bg: var(--xa-bg-2);
+    /* tip: */ --xas-tip-bg: var(--xas-tip-bg-2); --xas-tip-txt: var(--xas-tip-txt-2); }
+.xas-btn-3{ 
+    /* btn: */ --xas-btn-bg: var(--xa-bg-3);
+    /* tip: */ --xas-tip-bg: var(--xas-tip-bg-3); --xas-tip-txt: var(--xas-tip-txt-3); }
+.xas-btn-4{ 
+    /* btn: */ --xas-btn-bg: var(--xa-bg-4);
+    /* tip: */ --xas-tip-bg: var(--xas-tip-bg-4); --xas-tip-txt: var(--xas-tip-txt-4); }
+
+
+.xas-btn-0:hover::after, 
+.xas-btn-1:hover::after, 
+.xas-btn-2:hover::after, 
+.xas-btn-3:hover::after, 
+.xas-btn-4:hover::after {
+    content: 'Not Available'; 
+    position: absolute; 
+    top: -110%; 
+    left: 0%;
+    height: 100%;
+    width: calc(var(--xai-w) - 2px);
+
+    color: var(--xas-tip-txt);
+    background: var(--xas-tip-bg);
+    outline: 1px solid var(--xas-tip-txt);
+    z-index: 1;
+}
+
+.xas-btn-0:hover::after{ left: 0px; content: 'Not Available'; }
+.xas-btn-1:hover::after{ left: -20px; content: 'Busy'; }
+.xas-btn-2:hover::after{ left: -40px; content: 'Distracted'; }
+.xas-btn-3:hover::after{ left: -60px; content: 'Available'; }
+.xas-btn-4:hover::after{ left: -80px; content: 'Optimal'; }
 
 
 
-.xa-0 .xa-btn-0 { display: none; }
-.xa-1 .xa-btn-1 { display: none; }
-.xa-2 .xa-btn-2 { display: none; }
-.xa-3 .xa-btn-3 { display: none; }
-.xa-4 .xa-btn-4 { display: none; }
+/* .xa-ic.edit .xas{
+    display: flex;
+}
+
+.xa-ic:not(.edit) .xas{
+    display: none;
+} */

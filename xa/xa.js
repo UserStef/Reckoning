@@ -186,6 +186,26 @@ function make_xai(day, hour, avail = -1){
     xai.appendChild(xaSelect);
     return xai;
 }
+function make_xaic(day, hour, avail = -1){
+    let xaic = document.createElement("div");
+    xaic.classList.add(`xaic`,`xt-${day}`,`xt-${hour}`,`xa-${avail}`);
+    xaic.id = `xaic-${day}-${hour}`;
+    xaic.dataset.avail = avail;
+    xaic.dataset.tog = `id-${avail}`;
+    xaic.innerHTML = `
+        <div class="xai" data-xaid="${day}-${hour}" data-avail="${avail}">
+            Not Available
+        </div>
+        <div class="xas" data-tog="id-${avail}">
+            <div class="xas-btn-0" data-xas="0">N</div>
+            <div class="xas-btn-1" data-xas="1">B</div>
+            <div class="xas-btn-2" data-xas="2">D</div>
+            <div class="xas-btn-3" data-xas="3">A</div>
+            <div class="xas-btn-4" data-xas="4">O</div>
+        </div>`
+
+    return xaic;
+}
 function Make_xaTable(){
     let xc = ('0'.repeat(7)+',').repeat(24).slice(0,191).split(',').map(x=>x.split(''));
     // `xaw` = availability for a whole week, also known as the availability schedule.
@@ -204,22 +224,12 @@ function Make_xaTable(){
 
     Object.keys(xc).forEach(h => {
         let hour = getAXh(h);
-
         /* Add Column for Hours */
         let xah = make_xait(-1, h);
-
         xaw.appendChild(xah);
-
         Object.keys(xc[h]).forEach(d =>{
             let day = weekdays[d];
-            // `xaic` = for the availability schedule, an item container.
-            let xaic = document.createElement("div");
-            // `xt-` = a css class for toggling.
-            xaic.classList.add(`xaic`, `xt-${day}`, `xt-${hour}`);
-            xaic.id = `xaic-${day}-${hour}`;
-            // 'xai' = single item in the availability schedule.
-            let xai = make_xai(day, hour);
-            xaic.appendChild(xai);
+            let xaic = make_xaic(day, hour);
             xaw.appendChild(xaic);
         });
     });
@@ -251,15 +261,38 @@ function update_xai(id, avail){
     xaList[xaDisplaying][hour][day] = avail;
     console.table(xaList[xaDisplaying]);
 }
+function update_xaic(id, avail){
+    let xaic = document.getElementById(`${id}`);
+
+    let before_avail = xaic.dataset.avail;
+
+    xaic.classList.remove(`xa-${before_avail}`);
+    xaic.classList.add(`xa-${avail}`);
+
+    xaic.dataset.avail = avail;
+    xaic.dataset.tog = `id-${avail}`;
+
+    let day = weekdays.indexOf(id.split('-')[1]);
+    // console.log(`day: ${day}`);
+    let hour = getHour(id.split('-')[2]);
+    // console.log(`hour: ${hour}`);
+
+    xaic.children[0].innerHTML = availability[avail];
+    
+    // console.log(`xaList → [${hour}]: ${xaList[xaDisplaying][hour]}`);
+    xaList[xaDisplaying][hour][day] = avail;
+    // console.table(xaList[xaDisplaying]);
+}
 function Update_xaTable(xc){
     Object.keys(xc).forEach(h => {
         let hour = getAXh(h);
         Object.keys(xc[h]).forEach(d => {
             let day = weekdays[d];
-            let xaic = document.getElementById(`xaic-${day}-${hour}`);
-            xaic.innerHTML = ``;
-            let xai = make_xai(day, hour, xc[h][d]);
-            xaic.appendChild(xai);
+            update_xaic(`xaic-${day}-${hour}`,xc[h][d]);
+            // let xaic = document.getElementById(`xaic-${day}-${hour}`);
+            // xaic.innerHTML = ``;
+            // let xai = make_xai(day, hour, xc[h][d]);
+            // xaic.appendChild(xai);
         })
     })
 }
@@ -337,7 +370,7 @@ window.addEventListener("click", (ev) =>{
 
     if(ev.target.dataset.new == "xa"){
         console.log(" ── ✨ I'm going on an Adventure ✨ ── ");
-        xaAdventure();
+        // xaAdventure();
     }
     if(ev.target.dataset.new == "exit"){
         console.log(" ── 👍 Got it, good luck! 👋 ── ");
@@ -349,8 +382,9 @@ window.addEventListener("click", (ev) =>{
     if(ev.target.dataset.xas != null){
         let xaSelection = ev.target.dataset.xas;
         console.log(` ── 📯Click! - Selection ${xaSelection} ── `);
-        let xaid = ev.target.parentElement.parentElement.dataset.xaid;
-        update_xai(xaid, xaSelection);
+        // let xaid = ev.target.parentElement.parentElement.dataset.xaid;
+        let xaid = ev.target.parentElement.parentElement.id;
+        update_xaic(xaid, xaSelection);
         Update_xaData();
     }
 
