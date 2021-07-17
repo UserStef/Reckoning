@@ -8,72 +8,77 @@
     <link rel="icon" href="https://raw.githubusercontent.com/UserStefDLT/WebResources/master/Images/icon_st.png">
     <link rel="stylesheet" href="../main.css">
     <link rel="stylesheet" href="xa.css">
+    <link rel="stylesheet" href="../end.css">
 </head>
 <body>
     <header>
         <div class="title">Reckoning Time</div>
-        <div class="nav">
-            <a href="../index.html" class="nav-btn">Home</a>
+        <div id="welcome-msg" class="welcome-msg"></div>
+        <div class="nav hidden">
+            <div class="nav-btn">Home</div>
             <div class="nav-btn">Calendar</div>
             <div class="nav-btn nav-selected">Availability</div>
             <div class="nav-btn">Contacts</div>
             <div class="nav-btn">Settings</div>
         </div>
     </header>
+
+    <!-- <div class="default-view hidden"></div> -->
     
+    <!-- Welcome, the NPC is for for users to interact with the system. -->
+    <div id="npc" class="prompt hidden"></div>
 
-    <div id="xa" class="xa hidden"></div>
+    <!-- <div class="xa-test">
+        <div class="xaw">
+            <input type="checkbox" name="xae-tog" id="xae-tog" class="xae-hide">
+            <label for="xae-tog" class="xae-tog">Edit</label>
 
-    <!-- <div class="xa">
-        <div class="xaih">A</div>
-        <div class="xai">1</div>
-        <div class="xai">2</div>
-        <div class="xai">3</div>
-        <div class="xai">4</div>
-        <div class="xai">5</div>
-        <div class="xai">6</div>
-        <div class="xai">7</div>
-        <div class="xaih">B</div>
-        <div class="xai">8</div>
-        <div class="xai">9</div>
-        <div class="xai">10</div>
-        <div class="xai">11</div>
-        <div class="xai">12</div>
-        <div class="xai">13</div>
-        <div class="xai">14</div>
-        <div class="xaih">C</div>
-        <div class="xai">15</div>
-        <div class="xai">16</div>
-        <div class="xai">17</div>
-        <div class="xai">18</div>
-        <div class="xai">19</div>
-        <div class="xai">20</div>
-        <div class="xai">21</div>
-        <div class="xaih">D</div>
-        <div class="xai">22</div>
-        <div class="xai">23</div>
-        <div class="xai">24</div>
+            
+            <input type="text" name="xae_title" id="xae_title" class="xae-panel-title" placeholder="Title">
+            
+            <input type="checkbox" name="xae-save" id="xae-save" class="xae-hide">
+            <label for="xae-save" class="xae-panel-save">Save</label>
+            
+            <input type="checkbox" name="xae-sleep" id="xae-sleep" class="xae-hide">
+            <label for="xae-sleep" class="xae-panel-sleep">Sleep</label>
+            
+            <input type="checkbox" name="xae-colors" id="xae-colors" class="xae-hide">
+            <label for="xae-colors" class="xae-panel-colors">Colors</label>
+
+            <input type="checkbox" name="xae-time" id="xae-time" class="xae-hide">
+            <label for="xae-time" class="xae-panel-time"></label>
+        </div>
     </div> -->
 
+    <!-- xa is for the availability schedule. -->
+    <!-- <div id="xa" class="xa hidden"></div> -->
+    <div id="xaView" class="xaView">
 
+        <div id="xa" class="xa hidden">
+            <input type="checkbox" name="xae-tog" id="xae-tog" class="xae-hide">
+            <label for="xae-tog" class="xae-tog">Edit</label>
+        
+            <input type="text" name="xae_title" id="xae_title" class="xae-panel-title" placeholder="Title">
+            <div id="xae_title_display" class="xae-display-title">untitled</div>
+            
+            <!-- <input type="checkbox" name="xae-save" id="xae-save" class="xae-hide"> -->
+            <!-- <label for="xae-save" class="xae-panel-save" data-save="title">Sav</label> -->
+            <label for="xae-save" class="xae-panel-save" data-save="title" data-state="0"></label>
+            
+            <!-- <input type="checkbox" name="xae-sleep" id="xae-sleep" class="xae-hide">
+            <label for="xae-sleep" class="xae-panel-sleep">Sleep</label> -->
+        
+            <!-- <input type="checkbox" name="xae-time" id="xae-time" class="xae-hide">
+            <label for="xae-time" class="xae-panel-time"></label> -->
+
+            <input type="checkbox" name="xae-colors" id="xae-colors" class="xae-hide">
+            <label for="xae-colors" class="xae-panel-colors">Colors</label>
+
+        </div>
+    </div>
+    
 
     <div class="name-end">by St&eacute;fano.</div>
     <script src="xa.js"></script>
-    <!-- <script>
-        console.log(" -- Start of script -- ");
-        window.addEventListener('load', async () =>{
-            console.log(" -- Start of load event. -- ");
-
-            let xai_list = document.querySelectorAll('.xai');
-            xai_list.forEach(xai => {
-                xai.innerHTML += `
-                <div class="xai-h">${xai.offsetHeight}</div>
-                <div class="xai-w">${xai.offsetWidth}</div>
-                `;
-            });
-
-            console.log(" -- End of load event. -- ");
-        });
-    </script> -->
 </body>
 </html>

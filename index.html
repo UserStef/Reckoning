@@ -13,20 +13,48 @@
 <body>
     <header>
         <div class="title">Reckoning Time</div>
+        <div id="welcome-msg" class="welcome-msg"></div>
         <div class="nav hidden">
             <div class="nav-btn">Home</div>
             <div class="nav-btn">Calendar</div>
-            <a href="xa" class="nav-btn">Availability</a>
+            <div class="nav-btn nav-selected">Availability</div>
             <div class="nav-btn">Contacts</div>
             <div class="nav-btn">Settings</div>
         </div>
     </header>
 
+    <!-- <div class="default-view hidden"></div> -->
     
-    <div id="xa" class="xa hidden"></div>
+    <!-- Welcome, the NPC is for for users to interact with the system. -->
+    <div id="npc" class="prompt hidden"></div>
 
-    <!-- <div class="test"></div>
-    <div class="test2"></div> -->
+    <!-- xa is for the availability schedule. -->
+    <!-- <div id="xa" class="xa hidden"></div> -->
+    <div id="xaView" class="xaView">
+
+        <div id="xa" class="xa hidden">
+            <input type="checkbox" name="xae-tog" id="xae-tog" class="xae-hide">
+            <label for="xae-tog" class="xae-tog">Edit</label>
+        
+            <input type="text" name="xae_title" id="xae_title" class="xae-panel-title" placeholder="Title">
+            <div id="xae_title_display" class="xae-display-title">untitled</div>
+            
+            <!-- <input type="checkbox" name="xae-save" id="xae-save" class="xae-hide"> -->
+            <!-- <label for="xae-save" class="xae-panel-save" data-save="title">Sav</label> -->
+            <label for="xae-save" class="xae-panel-save" data-save="title" data-state="0"></label>
+            
+            <!-- <input type="checkbox" name="xae-sleep" id="xae-sleep" class="xae-hide">
+            <label for="xae-sleep" class="xae-panel-sleep">Sleep</label> -->
+        
+            <!-- <input type="checkbox" name="xae-time" id="xae-time" class="xae-hide">
+            <label for="xae-time" class="xae-panel-time"></label> -->
+
+            <input type="checkbox" name="xae-colors" id="xae-colors" class="xae-hide">
+            <label for="xae-colors" class="xae-panel-colors">Colors</label>
+
+        </div>
+    </div>
+    
 
     <div class="name-end">by St&eacute;fano.</div>
     <script src="xa/xa.js"></script>
