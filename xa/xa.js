@@ -82,7 +82,7 @@ function string_xa(xc){
         if(x.join('') == x[0].repeat(7)){
             return x[0];
         } else if(x.join('').slice(1,6) == x[1].repeat(5)){
-            return `${x[1]}${x[0]}${x[2]}`;
+            return `${x[1]}${x[0]}${x[6]}`;
         } else {
             return x.join('');
         }
@@ -271,7 +271,7 @@ function update_xai(id, avail){
     // console.table(xaList[xaDisplaying]);
 }
 function update_xaic(id, avail){
-    // console.log(`♦ → update_xaic(${id}, ${avail})`);
+    console.log(`♦ → update_xaic(${id}, ${avail})`);
     // console.log(`xaDisplaying = ${xaDisplaying}`);
 
     let xaic = document.getElementById(`${id}`);
@@ -289,7 +289,7 @@ function update_xaic(id, avail){
     let hour = getHour(id.split('-')[2]);
     // console.log(`hour: ${hour}`);
 
-    // console.log(` └─• day: ${day} | hour: ${hour} | avail: ${avail}`);
+    console.log(` └─• day: ${day} | hour: ${hour} | avail: ${avail}`);
 
     xaic.children[0].innerHTML = availability[avail];
     
@@ -521,17 +521,17 @@ window.addEventListener("click", (ev) =>{
         // let xaid = ev.target.parentElement.parentElement.dataset.xaid;
         let xaid = ev.target.parentElement.parentElement.id;
         // console.log(xaid);
-        // let hour = getHour(xaid.split('-')[2]);
-        // console.log(`xaList → [${hour-1}]: ${xaList[xaDisplaying][hour-1]}`);
-        // console.log(`xaList → [${hour}]: ${xaList[xaDisplaying][hour]}`);
-        // console.log(`xaList → [${hour+1}]: ${xaList[xaDisplaying][hour+1]}`);
+        let hour = getHour(xaid.split('-')[2]);
+        console.log(`xaList → [${hour-1}]: ${xaList[xaDisplaying][hour-1]}`);
+        console.log(`xaList → [${hour}]: ${xaList[xaDisplaying][hour]}`);
+        console.log(`xaList → [${hour+1}]: ${xaList[xaDisplaying][hour+1]}`);
         console.log(`xaDisplaying = ${xaDisplaying}`);
         update_xaic(xaid, xaSelection);
 
-        // console.log(`xaList → [${hour-1}]: ${xaList[xaDisplaying][hour-1]}`);
-        // console.log(`xaList → [${hour}]: ${xaList[xaDisplaying][hour]}`);
-        // console.log(`xaList → [${hour+1}]: ${xaList[xaDisplaying][hour+1]}`);
-        console.table(xaList[xaDisplaying]);
+        console.log(`xaList → [${hour-1}]: ${xaList[xaDisplaying][hour-1]}`);
+        console.log(`xaList → [${hour}]: ${xaList[xaDisplaying][hour]}`);
+        console.log(`xaList → [${hour+1}]: ${xaList[xaDisplaying][hour+1]}`);
+        // console.table(xaList[xaDisplaying]);
 
         Update_xaData();
     }
@@ -596,9 +596,8 @@ window.addEventListener("click", (ev) =>{
     }
 
     if(ev.target.dataset.combine != null){
-        // CombineWith(ev.target.dataset.combine);
-        // xaDisplaying = `${xaDisplaying} in Combination`;
-        console.log('🚧Under Construction🚧');
+        console.log('Combine: ❗Careful it is still 🚧Under Construction🚧');
+        CombineWith(ev.target.dataset.combine);
     }
     if(ev.target.dataset.del != null){
         console.log(` ── 📯Click! - Delete ${ev.target.dataset.del} ── `);
@@ -737,8 +736,11 @@ function Encode_xaList(){
     console.log(xaList);
     data['xaList'] = {};
     Object.keys(xaList).forEach(xat => {
+        console.log(`♦${xat}`);
+        console.table(xaList[xat]);
         data['xaList'][xat] = string_xa(xaList[xat]);
         // data['xaList'][xat] = string_xa7d(xaList[xat]);
+        console.table(data['xaList'][xat]);
     });
     // console.log(Object.keys(xaList));
     // console.log(xaList);
@@ -853,30 +855,6 @@ function consoleDict(dat, datn = '', space = '\n'){
         }
     });
     return xlog;
-}
-
-// function Debug_xaList(){
-//     let xalids = [];
-//     let xal = '';
-//     Object.keys(xaList).forEach(x => {
-//         xalids.push(x);
-//         x.forEach(y => {
-//             y.forEach(z => {
-//                 xal += z;
-//             });
-//         });
-//     });
-
-// }
-
-// For Reference
-function ref_getAXh(h){
-    let axh = String.fromCharCode((1*h)+65);
-    return axh;
-}
-function ref_getHour(ax){
-    let h = ax.charCodeAt(0)-65;
-    return h;
 }
 
 /* version xa7d for encoding. */
@@ -1048,15 +1026,37 @@ function shareURL(){
 function CombineWith(xaName){
     let xan1 = xaDisplaying;
     let xan2 = xaName;
+    let xnadded = `${xaDisplaying} + ${xaName}`;
 
     let xa1 = xaList[xan1];
     let xa2 = xaList[xan2];
 
-    // xa1.forEach(row =>{
-    //     xa1
-    // });
+    let xa_to_add = [xa1, xa2];
+    let xa_added = addSchedules(xa_to_add);
 
-    // Make_New_xa();
+    Make_New_xa(xnadded);
 
-    return false;
+    xaList[xnadded] = xa_added;
+    Update_xaTable(xaList[xaDisplaying]);
+
+}
+
+function addSchedules(schedules = []){
+    if(schedules.length < 1){
+        return schedules;
+    }
+    var addedSchedules = [];
+    for(let i = 0; i<24; i++){
+        let h = [];
+        for(let j = 0; j<7; j++){
+            let toAdd = [];
+            schedules.forEach(user => {
+                toAdd.push(user[i][j]*1);
+            })
+            let min = Math.min(...toAdd)
+            h.push(`${min}`);
+        }
+        addedSchedules.push(h);
+    }
+    return addedSchedules;
 }
