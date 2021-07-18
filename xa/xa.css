@@ -388,53 +388,13 @@
 .xas-btn-4:hover::after{ left: -80px; content: 'Optimal'; }
 
 
-/* .xa-ic.edit .xas{
-    display: flex;
-}
-
-.xa-ic:not(.edit) .xas{
-    display: none;
-} */
-
-/* .xa-test {
-    height: max-content; width: var(--xa-w);
-    margin: 12px auto;
-    background: var(--bcx);
-}
-
-.xa-test .xaw {
-    position: relative;
-    top: 0px;
-    
-    height: max-content; width: var(--xa-w);
-    margin: 0 auto;
-
-    display: grid;
-    grid-template-columns: var(--xa-cols);
-    grid-gap: 0px;
-} */
-
-/* #xae-panel {
-    position: relative;
-    top: 0px;
-    
-    min-height: 20px;
-    height: max-content; width: var(--xa-w);
-    margin: 0 auto;
-
-    display: grid;
-    grid-template-columns: var(--xa-cols);
-    grid-gap: 0px;
-} */
-
 *[class|="xae"] {
     margin: 2px 4px;
     /* outline: 1px solid #F258; */
 }
 
 #xae-tog ~ .xae-panel,
-#xae-tog ~ input[class|="xae-panel"],
-#xae-tog ~ label[class|="xae-panel"],
+#xae-tog ~ *[class|="xae-panel"],
 #xae-tog:not(:checked) ~ .xaw .xas,
 #xae-tog:checked ~ *[class|="xae-display"] {
     display: none;
@@ -443,8 +403,7 @@
     transition: opacity 400ms ease-in-out 200ms;
 }
 #xae-tog:checked ~ .xae-panel,
-#xae-tog:checked ~ input[class|="xae-panel"],
-#xae-tog:checked ~ label[class|="xae-panel"],
+#xae-tog:checked ~ *[class|="xae-panel"],
 #xae-tog ~ *[class|="xae-display"] {
     display: flex;
     visibility: visible;
@@ -467,8 +426,9 @@
 
 
 label[class|="xae-panel"] {
+    cursor: pointer;
     color: white;
-    padding: 2px 8px;
+    padding: 4px 8px;
     width: max-content;
     border-radius: 5px;
     opacity: 1;
@@ -494,6 +454,7 @@ label[class|="xae-panel"] {
 
     top: -12px;
     left: 0px; */
+    padding: 4px 8px;
 
     grid-column: 1;
     z-index: 1;
@@ -607,9 +568,9 @@ label[class|="xae-panel"] {
 /* ♦ .xae-panel-colors → Toggle Colors ♦ */
 #xae-colors:not(:checked) ~ .xae-panel-colors {
     color: #fff;
-    background-color: var(--xai-bg-1);
+    background-color: #012D;
     border: 1px solid;
-    padding: 2px 2px;
+    padding: 4px;
     font-size: 14px;
     box-shadow: var(--shadow-bright-off);
     transition: box-shadow 100ms ease-in-out;
@@ -680,6 +641,16 @@ label[class|="xae-panel"] {
     content: 'hrs';
 }
 
+.xae-panel-share {
+    cursor: pointer;
+    border: 1px solid white;
+    width: max-content;
+    padding: 2px 8px;
+    border-radius: 5px;
+    background-image: linear-gradient(0deg, #aaa, #888, #555);
+    box-shadow: inset 0px 3px 0px 0px #ccc,
+                inset 0px -3px 0px 0px #444;
+}
 
 .xae-hide {
     position: absolute;

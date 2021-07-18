@@ -238,12 +238,12 @@ function Make_xaTable(){
     return xaw;
 }
 
-function Update_xaTitle(){
+function Update_xaTitle(xaTitle = xaDisplaying){
     let xae_title = document.getElementById('xae_title');
-    xae_title.placeholder = `Title: ${xaDisplaying}`;
-    xae_title.value = xaDisplaying;
+    xae_title.placeholder = `Title: ${xaTitle}`;
+    xae_title.value = xaTitle;
 
-    document.getElementById('xae_title_display').innerHTML = `${xaDisplaying}'s Availability`;
+    document.getElementById('xae_title_display').innerHTML = `${xaTitle}'s Availability`;
 }
 
 function update_xai(id, avail){
@@ -596,7 +596,8 @@ window.addEventListener("click", (ev) =>{
     }
 
     if(ev.target.dataset.combine != null){
-        console.log('Combine: ❗Careful it is still 🚧Under Construction🚧');
+        console.log(` ── 📯Click! - Combine ${ev.target.dataset.combine} ── `);
+        console.log(`Combining: ${xaDisplaying} + ${ev.target.dataset.combine}`);
         CombineWith(ev.target.dataset.combine);
     }
     if(ev.target.dataset.del != null){
@@ -611,6 +612,11 @@ window.addEventListener("click", (ev) =>{
         }
     }
 
+    if(ev.target.dataset.share != null){
+        console.log(` ── 📯Click! - Share Link 🌐 | ${ev.target.dataset.share} ── `);
+        console.log(' 🌐 Share link: ❗Careful it is still 🚧Under Construction🚧');
+        shareURL()
+    }
     
 });
 
@@ -653,6 +659,16 @@ window.addEventListener('load', async () =>{
         console.log("Welcome adventurer!");
         setNewAdventurer();
     }
+
+    let xaQ = document.URL.toString()
+    if(xaQuery(xaQ)){
+        console.log('xaDisplaying = temp');
+        xaDisplaying = 'temp';
+    }
+    if(xaDisplaying == 'temp') {
+        xaDisplaying = Object.keys(xaList)[0];
+    }
+
     Update_xaTable(xaList[xaDisplaying]);
     xaContainer.classList.remove('hidden');
 
@@ -733,19 +749,21 @@ function Update_xaData(){
 function Encode_xaList(){
     // string_xa7d(xc) 
     // table_xa7d(xc)
-    console.log(xaList);
+    // console.log(xaList);
     data['xaList'] = {};
     Object.keys(xaList).forEach(xat => {
-        console.log(`♦${xat}`);
-        console.table(xaList[xat]);
-        data['xaList'][xat] = string_xa(xaList[xat]);
-        // data['xaList'][xat] = string_xa7d(xaList[xat]);
-        console.table(data['xaList'][xat]);
+        if(xat != 'temp'){
+            console.log(`♦${xat}`);
+            // console.table(xaList[xat]);
+            data['xaList'][xat] = string_xa(xaList[xat]);
+            // data['xaList'][xat] = string_xa7d(xaList[xat]);
+            // console.table(data['xaList'][xat]);
+        }
     });
     // console.log(Object.keys(xaList));
     // console.log(xaList);
-    console.log(Object.keys(data['xaList']));
-    console.log(data['xaList']);
+    // console.log(Object.keys(data['xaList']));
+    // console.log(data['xaList']);
 }
 
 function Decode_xaList(){
@@ -1011,15 +1029,43 @@ function string_xa7d(xc){
     return xcw.join('');
 };
 
+// loadURL();
+function xaQuery(url){
+    console.log(`♦xaQuery(${url})`);
 
+    console.log(url);
+    console.log(url.split('?'));
 
+    if(url.split('?').length < 2){
+        console.log('🌐-No Query');
+        return false;
+    }
+    if(url.split('?')[1].split('=').length < 2){
+        console.log('🌐-Bad Query');
+        return false;
+    }
 
+    let xaEncoding = url.split('?')[1].split('=')[0];
+    let xaSchedule = url.split('?')[1].split('=')[1];
+
+    console.log(xaEncoding);
+    console.log(xaSchedule);
+
+    let xaListLen = Object.keys(xaList).length;
+    xaDisplaying = `Shared-${xaListLen}`;
+
+    xaList[xaDisplaying] = table_xa(xaSchedule);
+    
+    console.log(' ────────── ────────── \n • xaList:')
+    console.log(xaList);
+    return true;
+}
 
 function shareURL(){
-// `A2C0I2J313L323M3N232P3R232T8issU8iqsV8nqsW8mlm`.match(/[5-9]|[A-Z]/g);
-// `A2C0I2J313L323M3N232P3R232T8issU8iqsV8nqsW8mlm`.split(/[5-9]|[A-Z]/g).slice(1);
-
-
+    let xaShare = string_xa(xaList[xaDisplaying]);
+    let baseURL = document.URL.split('?')[0];
+    let xaShareLink = `${baseURL}?xa4=${xaShare}`;
+    document.getElementById('welcome-msg').innerHTML = xaShareLink;
 }
 
 

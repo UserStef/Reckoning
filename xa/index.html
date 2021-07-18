@@ -14,71 +14,61 @@
     <header>
         <div class="title">Reckoning Time</div>
         <div id="welcome-msg" class="welcome-msg"></div>
-        <div class="nav hidden">
-            <div class="nav-btn">Home</div>
+        <div class="nav">
+            <a href="../index.html" class="nav-btn">Home</a>
             <div class="nav-btn">Calendar</div>
             <div class="nav-btn nav-selected">Availability</div>
             <div class="nav-btn">Contacts</div>
             <div class="nav-btn">Settings</div>
         </div>
     </header>
-
-    <!-- <div class="default-view hidden"></div> -->
     
-    <!-- Welcome, the NPC is for for users to interact with the system. -->
-    <div id="npc" class="prompt hidden"></div>
-
-    <!-- <div class="xa-test">
-        <div class="xaw">
-            <input type="checkbox" name="xae-tog" id="xae-tog" class="xae-hide">
-            <label for="xae-tog" class="xae-tog">Edit</label>
-
-            
-            <input type="text" name="xae_title" id="xae_title" class="xae-panel-title" placeholder="Title">
-            
-            <input type="checkbox" name="xae-save" id="xae-save" class="xae-hide">
-            <label for="xae-save" class="xae-panel-save">Save</label>
-            
-            <input type="checkbox" name="xae-sleep" id="xae-sleep" class="xae-hide">
-            <label for="xae-sleep" class="xae-panel-sleep">Sleep</label>
-            
-            <input type="checkbox" name="xae-colors" id="xae-colors" class="xae-hide">
-            <label for="xae-colors" class="xae-panel-colors">Colors</label>
-
-            <input type="checkbox" name="xae-time" id="xae-time" class="xae-hide">
-            <label for="xae-time" class="xae-panel-time"></label>
-        </div>
-    </div> -->
-
     <!-- xa is for the availability schedule. -->
     <!-- <div id="xa" class="xa hidden"></div> -->
     <div id="xaView" class="xaView">
 
-        <div id="xa" class="xa hidden">
-            <input type="checkbox" name="xae-tog" id="xae-tog" class="xae-hide">
-            <label for="xae-tog" class="xae-tog">Edit</label>
-        
-            <input type="text" name="xae_title" id="xae_title" class="xae-panel-title" placeholder="Title">
-            <div id="xae_title_display" class="xae-display-title">untitled</div>
+            <div id="xa" class="xa hidden">
+                <input type="checkbox" name="xae-tog" id="xae-tog" class="xae-hide">
+                <label for="xae-tog" class="xae-tog">Edit</label>
             
-            <!-- <input type="checkbox" name="xae-save" id="xae-save" class="xae-hide"> -->
-            <!-- <label for="xae-save" class="xae-panel-save" data-save="title">Sav</label> -->
-            <label for="xae-save" class="xae-panel-save" data-save="title" data-state="0"></label>
+                <input type="text" name="xae_title" id="xae_title" class="xae-panel-title" placeholder="Title">
+                <div id="xae_title_display" class="xae-display-title">untitled</div>
+                
+                <!-- <input type="checkbox" name="xae-save" id="xae-save" class="xae-hide"> -->
+                <!-- <label for="xae-save" class="xae-panel-save" data-save="title">Sav</label> -->
+                <label for="xae-save" class="xae-panel-save" data-save="title" data-state="0"></label>
+                
+                <!-- <input type="checkbox" name="xae-sleep" id="xae-sleep" class="xae-hide">
+                <label for="xae-sleep" class="xae-panel-sleep">Sleep</label> -->
             
-            <!-- <input type="checkbox" name="xae-sleep" id="xae-sleep" class="xae-hide">
-            <label for="xae-sleep" class="xae-panel-sleep">Sleep</label> -->
-        
-            <!-- <input type="checkbox" name="xae-time" id="xae-time" class="xae-hide">
-            <label for="xae-time" class="xae-panel-time"></label> -->
-
-            <input type="checkbox" name="xae-colors" id="xae-colors" class="xae-hide">
-            <label for="xae-colors" class="xae-panel-colors">Colors</label>
-
-        </div>
-    </div>
+                <!-- <input type="checkbox" name="xae-time" id="xae-time" class="xae-hide">
+                <label for="xae-time" class="xae-panel-time"></label> -->
     
+                <input type="checkbox" name="xae-colors" id="xae-colors" class="xae-hide">
+                <label for="xae-colors" class="xae-panel-colors">Colors</label>
+    
+                <div id="xae_btn_share" class="xae-panel-share" data-share='true'>Share🔗</div>
+    
+            </div>
+        </div>
 
     <div class="name-end">by St&eacute;fano.</div>
     <script src="xa.js"></script>
+    <!-- <script>
+        console.log(" -- Start of script -- ");
+        window.addEventListener('load', async () =>{
+            console.log(" -- Start of load event. -- ");
+
+            let xai_list = document.querySelectorAll('.xai');
+            xai_list.forEach(xai => {
+                xai.innerHTML += `
+                <div class="xai-h">${xai.offsetHeight}</div>
+                <div class="xai-w">${xai.offsetWidth}</div>
+                `;
+            });
+
+            console.log(" -- End of load event. -- ");
+        });
+    </script> -->
 </body>
 </html>

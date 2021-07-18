@@ -81,9 +81,10 @@ body {
 
 header{
     width: 100vw;
-    display: grid;
+    display: flex;
+    /* display: grid;
     grid-auto-flow: column;
-    grid-gap: 12px;
+    grid-gap: 12px; */
     box-shadow: 0px 4px 4px #1119;
     padding: 2px 0;
     background: var(--titleBG);
@@ -94,12 +95,13 @@ header{
     font-weight: 600;
     padding-left: 12px;
     /* margin-bottom: 8px; */
+    width: max-content;
 }
 .welcome-msg {
     color: #fffa;
     padding: 0px 8px;
     width: max-content;
-    margin: 0px;
+    margin: 4px;
     margin-left: auto;
 }
 .nav {
