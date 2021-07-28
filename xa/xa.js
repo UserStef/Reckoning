@@ -767,8 +767,10 @@ function Rename_xaTitle(){
     console.log(Object.keys(xaList));
     if(Object.keys(xaList).includes(new_name)){
         console.log(`The name "${new_name}" is being used.`);
-        input_title.value = `${new_name}+`;
-        console.log(`Try something else like: "${new_name}+".`);
+        let tryName = nextName(new_name);
+        window.alert(`The name "${new_name}" is being used. \n Try something else like: "${tryName}".`);
+        input_title.value = `${tryName}`;
+        console.log(`Try something else like: "${tryName}".`);
         return false;
     } else {
         xaList[new_name] = xaList[xaDisplaying];
@@ -790,24 +792,18 @@ function Rename_xaTitle(){
 }
 function Make_New_xa(xaName = ''){
     let xaListLen = Object.keys(xaList).length;
-    // console.log(xaListLen);
-    if(xaName == ''){
-        xaDisplaying = `Untitled-${xaListLen}`;
-    } else {
-        xaDisplaying = xaName;
-    }
+    xaName = nextName(xaName, 1, 'untitled');
+    Add_xaLi(xaName);
+    Switch_xaList(xaName);
+
+    xaDisplaying = xaName;
     xaList[xaDisplaying] = Build_xaArray();
     Update_xaData();
     Update_xaTable(xaList[xaDisplaying]);
-    Add_xaLi(xaDisplaying);
 
-    
-    if(xaName == ''){
-        xaName = `Untitled-${xaListLen}`;
+    if(welcome_msg_status != "welcome"){
+        document.getElementById('welcome-msg').innerHTML = ``;
     }
-    xaList[xaName] = Build_xaArray();
-    Update_xaData();
-    document.getElementById('welcome-msg').innerHTML = ``;
 }
 function consoleAll(){
     console.log(`♦───────────────♦`);
@@ -1042,8 +1038,8 @@ function xaQuery(url){
     let xaSchedule = url.split('?')[1].split('=')[1];
     console.log(xaEncoding);
     console.log(xaSchedule);
-    let xaListLen = Object.keys(xaList).length;
-    xaDisplaying = `Shared-${xaListLen}`;
+    xaName = nextName(xaName, 1, 'shared');
+    xaDisplaying = xaName;
     xaList[xaDisplaying] = table_xa7c(xaSchedule);
     console.log(' ────────── ────────── \n • xaList:')
     console.log(xaList);
@@ -1061,7 +1057,10 @@ function CombineWith(xaName){
     let xan2 = xaName;
     let xnadded = `(${xaDisplaying} + ${xaName})`;
     if(Object.keys(xaList).includes(xnadded)){
-        xnadded += `-${Object.keys(xaList).length}`;
+        xnadded = nextName(xnadded, 1);
+    }
+    if(xnadded.length > 100) {
+        xnadded = nextName("A lot!", 1);
     }
     let xa1 = xaList[xan1];
     let xa2 = xaList[xan2];
@@ -1090,4 +1089,41 @@ function addSchedules(schedules = []){
         addedSchedules.push(h);
     }
     return addedSchedules;
+}
+
+function nextName1(xaName, count = 0, preName = 'Untitled'){
+    console.log(`xaName: ${xaName} | count: ${count} | preName: ${preName}`);
+    let xaListLen = Object.keys(xaList).length;
+    let xaNextName = "";
+    if(xaName == ''){
+        xaNextName = `${preName}-${xaListLen+count}`;
+        if(Object.keys(xaList).includes(xaNextName)){
+            return nextName(preName, count+1);
+        }
+    } else if(Object.keys(xaList).includes(xaName)){
+        xaNextName = `${xaName}-${xaListLen+count}`;
+        if(Object.keys(xaList).includes(xaNextName)){
+            return nextName(xaName, count+1);
+        }
+    }
+    return xaNextName;
+}
+
+function nextName(xaName, count = 1, preName = 'err'){
+    console.log(`xaName: ${xaName} | count: ${count}`);
+    let xaListLen = 0;
+    if(count > 20) { xaListLen = Object.keys(xaList).length;}
+    if(count > 50) { xaName = `err-${xaName}-${count}`;}
+    let xaNextName = `${xaName}-${xaListLen+count}`;
+    console.log(` → xaNextName: ${xaNextName}`);
+    if(xaName == ''){
+        xaNextName = `${preName}-${xaListLen+count}`;
+        if(Object.keys(xaList).includes(xaNextName)){
+            return nextName(preName, count+1);
+        }
+    } else if(Object.keys(xaList).includes(xaNextName)){
+        return nextName(xaName, count+1);
+    }
+    // console.log(` → xaNextName: ${xaNextName}`);
+    return xaNextName;
 }

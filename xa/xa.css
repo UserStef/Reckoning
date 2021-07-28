@@ -609,6 +609,8 @@ label[class|="xae-panel"] {
     list-style-type: none;
     margin: 0;
     padding: 0;
+    height: calc(var(--xal-h) - 40px);
+    overflow: scroll;
 }
 
 .xali {
