@@ -1,4 +1,20 @@
 
+.slow-hide {
+    opacity: 0;
+    transform: translateX(-1000px);
+    transition: opacity 2000ms ease-in-out 1500ms,
+    transform 3000ms ease-in-out 1000ms;
+}
+.slow-hide * {
+    background-color: #0000;
+    color: #0000;
+    opacity: 0.2;
+    transition: 
+    background-color 500ms ease-in-out 500ms, 
+    opacity 1000ms ease-in-out 1000ms,
+    color 500ms ease-in-out 1000ms;
+}
+
 
 /* End of Page */
 .btmspace{

@@ -16,11 +16,13 @@ const availability = {
     "5": "Decided"
 }
 var xaContainer = document.getElementById('xa');
+var npcContainer = document.getElementById('npc');
 var Adventurer = ''; /* Name of the User */
 var CurrentView = ''; /* What view they are looking at. */
 var xaDisplaying = ''; /* Which of their Availability Schedules they are seeing. */
 let xaTable = [];
 let xaList = {};
+let welcome_msg_status = `welcome`;
 function Load_fromLocal(key) {
     let project_key = `reckoning-${key}`;
     if (localStorage.getItem(project_key)) {
@@ -207,7 +209,7 @@ function update_xai(id, avail){
     console.log(xaList[xaDisplaying]);
 }
 function update_xaic(id, avail){
-    console.log(`♦ → update_xaic(${id}, ${avail})`);
+    // console.log(`♦ → update_xaic(${id}, ${avail})`);
     let xaic = document.getElementById(`${id}`);
     let before_avail = xaic.dataset.avail;
     xaic.classList.remove(`xa-${before_avail}`);
@@ -216,11 +218,12 @@ function update_xaic(id, avail){
     xaic.dataset.tog = `id-${avail}`;
     let day = weekdays.indexOf(id.split('-')[1]);
     let hour = getHour(id.split('-')[2]);
-    console.log(` └─• day: ${day} | hour: ${hour} | avail: ${avail}`);
+    // console.log(` └─• day: ${day} | hour: ${hour} | avail: ${avail}`);
     xaic.children[0].innerHTML = availability[avail];
     xaList[xaDisplaying][hour][day] = avail;
 }
 function Update_xaTable(xc){
+    console.log(xc);
     Update_xaTitle();
     Object.keys(xc).forEach(h => {
         let hour = getAXh(h);
@@ -279,22 +282,35 @@ function Build_xaList_ol(newList){
         if(i == xaDisplaying){
             xali.classList.add('xali-displaying');
         } 
-        xali.dataset.xaliToggle = i;
-        xali.id = `xaliToggle-${i}`;
+        xali.dataset.xali = i;
+        xali.id = `xali-${i}`;
         let xali_combine = document.createElement('div');
         xali_combine.classList.add('xali-btn-combine');
         xali_combine.innerHTML = '+';
-        xali_combine.dataset.combine = i;
+        // xali_combine.innerHTML = '🌀';
+        xali_combine.dataset.combine = true;
         xali.appendChild(xali_combine);
-        xali.innerHTML += i;
+        // xali.innerHTML += i;
+        let xali_title = document.createElement('div');
+        xali_title.innerHTML = i;
+        if(i == xaDisplaying){
+            xali_title.dataset.xaliToggle = false;
+        } else {
+            xali_title.dataset.xaliToggle = true;
+        }
+        xali.appendChild(xali_title);
         let xali_delete = document.createElement('div');
         xali_delete.classList.add('xali-btn-delete');
         xali_delete.innerHTML = 'x';
-        xali_delete.dataset.del = i;
+        // xali_delete.innerHTML = '💣';
+        // xali_delete.innerHTML = '🗑';
+        // xali_delete.innerHTML = '❌';
+        xali_delete.dataset.del = true;
         xali.appendChild(xali_delete);
         xal_list.appendChild(xali);
     });
     let xal_add = document.createElement('li');
+    xal_add.id = 'xal_add';
     xal_add.classList.add('xali', 'xal-add');
     xal_add.innerHTML = 'add new';
     xal_add.dataset.xaliAdd = 'true';
@@ -344,7 +360,65 @@ function Update_xaList(newList){
     xal_add.dataset.xaliAdd = 'true';
     xal_list.appendChild(xal_add);
 }
+function Switch_xaList(xali_id){
+    if(xali_id == xaDisplaying) { return };
+    let xal_li_1 = document.getElementById(`xali-${xaDisplaying}`);
+    let xal_li_2 = document.getElementById(`xali-${xali_id}`);
+
+    xal_li_1.classList.remove('xali-displaying');
+    xal_li_2.classList.add('xali-displaying');
+
+    xal_li_1.children[1].dataset.xaliToggle = true;
+    xal_li_2.children[1].dataset.xaliToggle = false;
+}
+function Rename_xaLi(xali_id, xali_new_id){
+    let xali_elem = document.getElementById(`xali-${xali_id}`);
+    xali_elem.innerHTML = xali_new_id;
+    xali_elem.id = `xali-${xali_new_id}`;
+    xali_elem.dataset.xali = i;
+    xali_elem.children[1].innerHTML = xali_new_id;
+    // xali_elem.children[1].dataset.xaliToggle = xali_new_id;
+}
+function Add_xaLi(xali_id){
+    let xal_list = document.getElementById('xali_ol');
+
+    let xali = document.createElement('li');
+    xali.classList.add('xali');
+    if(xali_id == xaDisplaying){
+        xali.classList.add('xali-displaying');
+    } 
+    xali.id = `xali-${xali_id}`;
+    xali.dataset.xali = xali_id;
+
+    let xali_combine = document.createElement('div');
+    xali_combine.classList.add('xali-btn-combine');
+    xali_combine.innerHTML = '+';
+    xali_combine.dataset.combine = true;
+    xali.appendChild(xali_combine);
+    
+    let xali_title = document.createElement('div');
+    xali_title.innerHTML = xali_id;
+    xali_title.dataset.xaliToggle = true;
+    xali.appendChild(xali_title);
+
+    let xali_delete = document.createElement('div');
+    xali_delete.classList.add('xali-btn-delete');
+    xali_delete.innerHTML = 'x';
+    xali_delete.dataset.del = true;
+    xali.appendChild(xali_delete);
+    xal_list.appendChild(xali);
+
+    let xal_add = document.getElementById('xal_add');
+    xal_list.appendChild(xal_add);
+}
+function Remove_xaLi(xali_id){
+    let xali_elem = document.getElementById(`xali-${xali_id}`);
+    xali_elem.innerHTML = ``;
+    xali_elem.remove();
+}
+
 function Switch_Update_xaList(new_xa_view){
+    if(new_xa_view == xaDisplaying) { return };
     let xal_li_1 = document.getElementById(`xaliToggle-${xaDisplaying}`);
     let xal_li_2 = document.getElementById(`xaliToggle-${new_xa_view}`);
     xal_li_1.classList.remove('xali-displaying');
@@ -377,6 +451,9 @@ window.addEventListener("click", (ev) =>{
         console.log(`xaList → [${hour}]: ${xaList[xaDisplaying][hour]}`);
         console.log(`xaList → [${hour+1}]: ${xaList[xaDisplaying][hour+1]}`);
         Update_xaData();
+        if(welcome_msg_status != "welcome"){
+            document.getElementById('welcome-msg').innerHTML = ``;
+        }
     }
     if(ev.target.dataset.xags != null){
         let xaSelection = ev.target.dataset.xags;
@@ -391,9 +468,21 @@ window.addEventListener("click", (ev) =>{
         Make_New_xa();
     }
     if(ev.target.dataset.xaliToggle != null){
-        console.log(` ── 📯Click! - New Schedule 📅 ── `);
-        console.log(`data-xali-toggle = ${ev.target.dataset.xaliToggle}`);
-        Update_xaDisplay(ev.target.dataset.xaliToggle);
+        console.log(` ── 📯Click! - Schedule Switch 📅 ── `);
+        let xaliName = ev.target.parentElement.dataset.xali;
+        console.log(`xaliName: •${xaliName}•`);
+        console.log(`typeof xaliToggle: ${typeof ev.target.dataset.xaliToggle}`);
+        if(ev.target.dataset.xaliToggle == "true"){
+            console.log(`xaliName: •${xaliName}• → xaliToggle: true`);
+            // Switch_xaList(xaliName);
+            Update_xaDisplay(xaliName);
+        } else {
+            console.log(`xaliName: •${xaliName}• → xaliToggle: false`);
+        }
+
+        // console.log(` ── 📯Click! - New Schedule 📅 ── `);
+        // console.log(`data-xali-toggle = ${ev.target.dataset.xaliToggle}`);
+        // Update_xaDisplay(ev.target.dataset.xaliToggle);
     }
     if(ev.target.dataset.save != null){
         console.log(` ── 📯Click! - Saving 💾 ── `);
@@ -424,17 +513,26 @@ window.addEventListener("click", (ev) =>{
         }
     }
     if(ev.target.dataset.combine != null){
-        console.log(` ── 📯Click! - Combine ${ev.target.dataset.combine} ── `);
-        console.log(`Combining: ${xaDisplaying} + ${ev.target.dataset.combine}`);
-        CombineWith(ev.target.dataset.combine);
+        let xaliName = ev.target.parentElement.dataset.xali;
+        console.log(`xaliName: •${xaliName}•`);
+
+        console.log(` ── 📯Click! - Combine ${xaliName} 🌀 ── `);
+        console.log(`Combining: (${xaDisplaying} + ${xaliName})`);
+        CombineWith(xaliName);
     }
     if(ev.target.dataset.del != null){
-        console.log(` ── 📯Click! - Delete ${ev.target.dataset.del} ── `);
+        let xaliName = ev.target.parentElement.dataset.xali;
+        console.log(`xaliName: •${xaliName}•`);
+
+        console.log(` ── 📯Click! - Delete ${xaliName} 💣 ── `);
         if(ev.target.dataset.del != Adventurer && ev.target.dataset.del != xaDisplaying){
-            delete xaList[ev.target.dataset.del];
+            delete xaList[xaliName];
+            Remove_xaLi(xaliName);
             Update_xaData();
-            Update_xaList(xaList);
-            console.log(`🗑 ${ev.target.dataset.del} was deleted.`)
+            
+            // delete xaList[ev.target.dataset.del];
+            // Update_xaList(xaList);
+            console.log(`💥 ${ev.target.dataset.del} was deleted.`)
         } else {
             console.log(`⛔Denied, because ${ev.target.dataset.del} is being displayed or the main one. ── `);
         }
@@ -444,7 +542,80 @@ window.addEventListener("click", (ev) =>{
         console.log(' 🌐 Share link: ❗Careful it is still 🚧Under Construction🚧');
         shareURL();
     }
+    if(ev.target.dataset.adventurerName != null){
+        if(ev.target.dataset.adventurerName == "yes"){
+            let AdventurerNameInput = document.getElementById('adventurer-input-name');
+            let npcPrompt = document.getElementById('npc-prompt');
+            let AdventurerName = AdventurerNameInput.value.trim();
+            if(AdventurerName != ""){
+                console.log(`AdventurerName = ~${AdventurerName}~`);
+                npcContainer.classList.add('slow-hide');
+                setNewAdventurer(AdventurerName);
+            } else {
+                if(ev.target.dataset.again == null){
+                    console.log(`Err0: AdventurerName is empty.`);
+                    npcPrompt.innerHTML = "What is your name?";
+                    AdventurerNameInput.placeholder = "Adventurer name here."
+                    ev.target.dataset.again = "1";
+                } else if(ev.target.dataset.again == "1"){
+                    console.log(`Err1: Adventurer doesn't have a name!`);
+                    npcPrompt.innerHTML = "Could you please write it down?";
+                    AdventurerNameInput.placeholder = " →  Here  ← "
+                    ev.target.dataset.again = "2";
+                } else if(ev.target.dataset.again == "2"){
+                    console.log(`Err2: Maybe the adventurer doesn't like his/her name.`);
+                    npcPrompt.innerHTML = `It doesn't have to be your name.`;
+                    AdventurerNameInput.placeholder = `Any name`;
+                    ev.target.dataset.again = "3";
+                } else if(ev.target.dataset.again == "3"){
+                    console.log(`Err3: Adventurer is missing the point.`);
+                    npcPrompt.innerHTML = `I'll write "Adventuter", ok?`;
+                    AdventurerNameInput.placeholder = `Did you came up with a name?`;
+                    AdventurerNameInput.value = "Adventurer"
+                    ev.target.dataset.again = "4";
+                } else if(ev.target.dataset.again == "4"){
+                    console.log(`Err4: Adventurer erased it.`);
+                    npcPrompt.innerHTML = `It can't be empty.`;
+                    AdventurerNameInput.placeholder = `Just write something, please.`;
+                    AdventurerNameInput.value = "Adventurer"
+                    ev.target.dataset.again = "5";
+                } else if(ev.target.dataset.again == "5"){
+                    console.log(`Err5: It is intentional`);
+                    npcPrompt.innerHTML = `Last chance.`;
+                    AdventurerNameInput.placeholder = `Adventurer Name`;
+                    ev.target.dataset.again = "6";
+                } else if(ev.target.dataset.again == "6"){
+                    console.log(`Err6: Now it is personal. No more chances.`);
+                    npcPrompt.innerHTML = `Ok, I'll just call you "Annoying".`;
+                    AdventurerNameInput.placeholder = `Adventurer Name`;
+                    AdventurerNameInput.value = "Annoying"
+                    ev.target.dataset.again = "9";
+                    AdventurerNameInput.disabled=true;
+                    AdventurerNameInput.classList.add('input-turned-off');
+                    ev.target.innerText = "No";
+
+                    window.setTimeout(() => {
+                        console.log('Fading button.')
+                        ev.target.classList.add('action-turned-off');
+                        ev.target.dataset.adventurerName = "no"
+                    }, 1000);
+
+                    setNewAdventurer('Annoying');
+                    window.setTimeout(() => {
+                        console.log('Ready to fade form.')
+                        npcContainer.classList.add('slow-hide');
+                    }, 3000);
+                }
+            }
+
+        } else if(ev.target.dataset.adventurerName == "no"){
+            npcPrompt.innerHTML = `Ok, I'll just call you "Adventurer".`;
+            setNewAdventurer("Adventurer");
+            npcContainer.classList.add('slow-hide');
+        }
+    }
 });
+
 function WhoAreYou(){
     let AdventurerName = '';
     let name = window.prompt(`Before we continue, I need to ask, what's your name?`);
@@ -467,20 +638,80 @@ function WhoAreYou(){
     }
     return AdventurerName;
 }
+
+function WhoAreYou2(){
+    let AdventurerName = 'Adventurer';
+    npcContainer.classList.remove('hidden');
+
+    // npcContainer.innerHTML = ``;
+    console.log("Ready!");
+
+    // let name = window.prompt(`Before we continue, I need to ask, what's your name?`);
+    // if(name == null){
+    //     console.log(`No name?, ok, I'll call you ${AdventurerName} then.`);
+    //     window.alert(`No name?, ok, I'll call you ${AdventurerName} then.`);
+    // } else if(name.length == 7){
+    //     AdventurerName = name;
+    //     console.log(`*gasps* Breathtaking. Nice to meet you ${AdventurerName}!`);
+    // } else if(name.length%2 == 0){
+    //     AdventurerName = name;
+    //     console.log(`I like how it sounds. Nice to meet you ${AdventurerName}!`);
+    // } else {
+    //     AdventurerName = name;
+    //     console.log(`Never heard of someone named ${AdventurerName}. That is an odd name.`);
+    // }
+    // if(AdventurerName != "Adventurer") {
+    //     console.log(`Achivement Complete: You are now known as ${AdventurerName}.`);
+    // }
+    return AdventurerName;
+}
 // ♦ ─────────────── ♦ ─────────────── ♦ ─────────────── ♦
 // ♦ ─────────────── ♦ ─────────────── ♦ ─────────────── ♦
 // ♦ ─────────────── ♦ ─────────────── ♦ ─────────────── ♦
 window.addEventListener('load', async () =>{
     console.log(" -- Start of load event. -- ");
     console.log(`Current Day and Time: \n\t${xo.toLocaleString()}`);
+    
     xaContainer.appendChild(Make_xaTable());
     if(Load_fromLocal("user")){
         WelcomeBackAdventurer();
         console.log(`Welcome back ${Adventurer}.`);
+        AdventurerReadyNowUpdate();
     } else {
         console.log("Welcome adventurer!");
-        setNewAdventurer();
+        npcContainer.classList.remove('hidden');
     }
+
+    console.log(" -- End of load event. -- ");
+});
+// ♦ ─────────────── ♦ ─────────────── ♦ ─────────────── ♦
+// ♦ ─────────────── ♦ ─────────────── ♦ ─────────────── ♦
+// ♦ ─────────────── ♦ ─────────────── ♦ ─────────────── ♦
+function setNewAdventurer(AdventurerName){
+    Adventurer = AdventurerName;
+    console.log(`Adventurer: ${Adventurer}.`);
+    xaDisplaying = Adventurer;
+    console.log(`xaDisplaying: ${xaDisplaying}`);
+    data['user'] = {};
+    data['user']['CurrentView'] = 'xa';
+    data['user']['main_xa_id'] = Adventurer;
+    data['xaList'] = {};
+    xaList[xaDisplaying] = Build_xaArray();
+    console.log(xaList);
+    updateUser();
+    AdventurerReadyNowUpdate();
+}
+function updateUser(){
+    data['user']['name'] = Adventurer;
+    data['user']['xaDisplaying'] = xaDisplaying;
+    data['user']['main_xa'] = string_xa7c(xaList[xaDisplaying]);
+    data['user']['xaEncode'] = "xa7c";
+    Encode_xaList();
+    console.log(data);
+    Save_toLocal('user');
+    Save_toLocal('xaList');
+}
+function AdventurerReadyNowUpdate(){
     let xaQ = document.URL.toString()
     if(xaQuery(xaQ)){
         console.log('xaDisplaying = temp');
@@ -494,32 +725,6 @@ window.addEventListener('load', async () =>{
     var xaView = document.getElementById('xaView');
     let xaNameList = xaList;
     xaView.appendChild(Build_xaList(xaNameList));
-    console.log(" -- End of load event. -- ");
-});
-// ♦ ─────────────── ♦ ─────────────── ♦ ─────────────── ♦
-// ♦ ─────────────── ♦ ─────────────── ♦ ─────────────── ♦
-// ♦ ─────────────── ♦ ─────────────── ♦ ─────────────── ♦
-function setNewAdventurer(){
-    Adventurer = WhoAreYou();
-    console.log(`Adventurer: ${Adventurer}.`);
-    xaDisplaying = Adventurer;
-    console.log(`xaDisplaying: ${xaDisplaying}`);
-    data['user'] = {};
-    data['user']['CurrentView'] = 'xa';
-    data['user']['main_xa_id'] = Adventurer;
-    data['xaList'] = {};
-    xaList[xaDisplaying] = Build_xaArray();
-    console.log(xaList);
-    updateUser();
-}
-function updateUser(){
-    data['user']['name'] = Adventurer;
-    data['user']['xaDisplaying'] = xaDisplaying;
-    data['user']['main_xa'] = string_xa7d(xaList[xaDisplaying]);
-    Encode_xaList();
-    console.log(data);
-    Save_toLocal('user');
-    Save_toLocal('xaList');
 }
 function WelcomeBackAdventurer(){
     Load_fromLocal('xaList');
@@ -529,12 +734,16 @@ function WelcomeBackAdventurer(){
     document.getElementById('welcome-msg').innerHTML = `Welcome back ${Adventurer}.`;
 }
 function Update_xaDisplay(newView){
-    Switch_Update_xaList(newView);
+    // Switch_Update_xaList(newView);
+    Switch_xaList(newView)
     xaDisplaying = newView;
     Update_xaTable(xaList[xaDisplaying]);
     Update_xaTitle();
     data['user']['xaDisplaying'] = newView;
     Save_toLocal('user');
+    if(welcome_msg_status != "welcome"){
+        document.getElementById('welcome-msg').innerHTML = ``;
+    }
 }
 function Update_xaData(){
     Encode_xaList();
@@ -543,11 +752,13 @@ function Update_xaData(){
 function Encode_xaList(){
     // console.log(xaList);
     data['xaList'] = {};
+    data['user']['xaEncode'] = "xa7c";
     Object.keys(xaList).forEach(xat => {
         if(xat != 'temp'){
             console.log(`♦${xat}`);
             // console.table(xaList[xat]);
-            data['xaList'][xat] = string_xa(xaList[xat]);
+            // data['xaList'][xat] = string_xa(xaList[xat]);
+            data['xaList'][xat] = string_xa7c(xaList[xat]);
             // console.table(data['xaList'][xat]);
         }
     });
@@ -557,8 +768,14 @@ function Encode_xaList(){
     // console.log(data['xaList']);
 }
 function Decode_xaList(){
+    let xaEncode = data['user']['xaEncode'];
     Object.keys(data['xaList']).forEach(xat => {
-        xaList[xat] = table_xa(data['xaList'][xat]);
+        if(xaEncode == "xa7c"){
+        // if(xaEncode == null){
+            xaList[xat] = table_xa7c(data['xaList'][xat]);
+        } else {
+            xaList[xat] = table_xa(data['xaList'][xat]);
+        }
     });
     // console.log(Object.keys(xaList));
     // console.log(xaList);
@@ -570,7 +787,7 @@ function Rename_xaTitle(){
     console.log(`xaDisplaying: ${xaDisplaying}`);
     let previous_name = xaDisplaying;
     console.log(`previous_name: ${previous_name}`);
-    console.log(xaList[xaDisplaying]);
+    // console.log(xaList[xaDisplaying]);
     let input_title = document.getElementById(`xae_title`);
     let new_name = input_title.value;
     console.log(`new_name: ${new_name}`);
@@ -583,9 +800,9 @@ function Rename_xaTitle(){
         return false;
     } else {
         xaList[new_name] = xaList[xaDisplaying];
-        delete xaList[xaDisplaying];
+        delete xaList[previous_name];
         if(xaDisplaying == data['user']['main_xa_id']){
-            data['user']['main_xa'] = string_xa7d(xaList[xaDisplaying]);
+            data['user']['main_xa'] = string_xa7c(xaList[xaDisplaying]);
             xaDisplaying = new_name;
             data['user']['main_xa_id'] = xaDisplaying;
         } else {
@@ -593,7 +810,7 @@ function Rename_xaTitle(){
         }
         Update_xaTitle();
         Update_xaData();
-        Update_xaList(xaList);
+        Rename_xaLi(previous_name, new_name);
         consoleAll();
     }
     console.log(`♦───♦ }//'Rename_xaTitle' ♦───♦`);
@@ -610,7 +827,32 @@ function Make_New_xa(xaName = ''){
     xaList[xaDisplaying] = Build_xaArray();
     Update_xaData();
     Update_xaTable(xaList[xaDisplaying]);
-    Update_xaList(xaList);
+    // Update_xaList(xaList);
+    Add_xaLi(xaDisplaying);
+
+    
+    if(xaName == ''){
+        xaName = `Untitled-${xaListLen}`;
+    }
+    xaList[xaName] = Build_xaArray();
+    Update_xaData();
+    document.getElementById('welcome-msg').innerHTML = ``;
+}
+function Make_New_xa2(xaName = '', xaTable = []){
+    let xaListLen = Object.keys(xaList).length;
+    // console.log(xaListLen);
+    if(xaName == ''){
+        xaName = `Untitled-${xaListLen}`;
+    }
+    if(xaTable.length == 0){    
+        xaList[xaName] = Build_xaArray();
+    } else {
+        xaList[xaName] = xaTable;
+    }
+    Update_xaData();
+
+    Update_xaTable(xaList[xaDisplaying]);
+    // Update_xaList(xaList);
 }
 function consoleAll(){
     console.log(`♦───────────────♦`);
@@ -644,6 +886,89 @@ function consoleDict(dat, datn = '', space = '\n'){
     });
     return xlog;
 }
+function table_xa7c(xc){
+    let xa = xc.split(/[A-Z]/g).slice(1);
+    // console.log(xa); // → (9) ["0", "5aua", "0", "2", "3", "2", "3", "2", "3"]
+    let xh = xc.match(/[A-Z]/g).map(ax => {return getHour(ax)});
+    // console.log(xh);// → (9) [0, 2, 3, 7, 8, 12, 13, 17, 18]
+
+    let hh = '1'.repeat(24).split('').reduce((r,x,i,a) => { r[i]=[]; return r;}, {});
+    // console.log(hh);
+
+    let xn = '';
+    let xn2 = [];
+    let index = 0;
+    for(let i = 0; i < 24; i++){
+        if(xh.includes(i)){
+            index = i;
+            xn = xa[xh.indexOf(i)];
+            if (xn.length > 3){
+                hh[`${i}`].push(`[${i}]`);
+                // console.log(`i=${i} | xn=${xn}`);
+                let xsun = xn.match(/[5-9]/g);
+                // console.log(xsun); // → ["5"]
+                let xdays = xn.split(/[5-9]/g).slice(1);
+                // console.log(xdays); // → ["aua"]
+                xn2 = [xsun[0]-5].concat(xdays[0].split('').reduce((r,x,i,a) => {
+                    let nn = x.charCodeAt()-97;
+                    let n1 = Math.floor(nn/5);
+                    let n2 = nn%5;
+                    return r.concat([n1,n2]);
+                },[]));
+                console.log(xn2);
+                hh[`${i}`].push(xn2);
+
+            } else {
+                // console.log(`i = ${i}`);
+                hh[`${i}`].push(`[${i}]`);
+                if(xn.length == 1){
+                    xn2 = xn.repeat(7).split('').map(r => {return 1*r});
+                    // [3,3,3,3,3,3,3]
+                } else if(xn.length == 3){
+                    xn2 = (xn[1]+xn[0].repeat(5)+xn[2]).split('').map(r => {return 1*r});
+                }
+                hh[`${i}`].push(xn2);
+                // console.log(hh[`${i}`][1]);
+            }
+        } else {
+            // console.log(`hh[${i}].length: `+hh[`${i}`].length);
+            // console.log(`i = ${i}`);
+            hh[`${i}`].push(`[${i}]`);
+            hh[`${i}`].push(hh[`${index}`][1].slice());
+            // console.log(hh[`${i}`][1]);
+        }
+    }
+    // console.log(hh);
+    let xha = [];
+    Object.keys(hh).forEach(k => {
+        xha.push(hh[k][1]);
+    });
+    return xha;
+}
+function string_xa7c(xc){
+    let xch = xc.map(x=>{
+        if(x.join('') == `${x[0]}`.repeat(7)){
+            return `${x[0]}`;
+        } else if(x.join('').slice(1,6) == `${x[1]}`.repeat(5)){
+            return `${x[1]}${x[0]}${x[2]}`;
+        } else {
+            let xa6 = `${1*x[0]+5}`;
+            xa6 += String.fromCharCode(((x[1]*5) + (x[2]*1))+97);
+            xa6 += String.fromCharCode(((x[3]*5) + (x[4]*1))+97);
+            xa6 += String.fromCharCode(((x[5]*5) + (x[6]*1))+97);
+            return xa6;
+        }
+    });
+    let xcw = xch.reduce( (r,x,i,a) =>{
+        let ax = String.fromCharCode((1*i)+65);
+        if(i!=0 && x == a[i-1]){
+            return r.concat('');
+        } else {
+            return r.concat(`${ax}${x}`); 
+        }
+    }, [])
+    return xcw.join('');
+};
 function table_xa7d(xc){
     let xa = xc.split(/[A-Z]/g);
     // console.log(xa); // → (10) ["2", "0", "2", "313", "323", "3", "232", "3", "232", "8iss8iqs8nqs8mlm"]
@@ -765,28 +1090,33 @@ function xaQuery(url){
     console.log(xaSchedule);
     let xaListLen = Object.keys(xaList).length;
     xaDisplaying = `Shared-${xaListLen}`;
-    xaList[xaDisplaying] = table_xa(xaSchedule);
+    xaList[xaDisplaying] = table_xa7c(xaSchedule);
     console.log(' ────────── ────────── \n • xaList:')
     console.log(xaList);
     return true;
 }
 function shareURL(){
-    let xaShare = string_xa(xaList[xaDisplaying]);
+    let xaShare = string_xa7c(xaList[xaDisplaying]);
     let baseURL = document.URL.split('?')[0];
-    let xaShareLink = `${baseURL}?xa4=${xaShare}`;
+    let xaShareLink = `${baseURL}?xa7c=${xaShare}`;
     document.getElementById('welcome-msg').innerHTML = xaShareLink;
+    welcome_msg_status = 'link';
 }
 function CombineWith(xaName){
     let xan1 = xaDisplaying;
     let xan2 = xaName;
-    let xnadded = `${xaDisplaying} + ${xaName}`;
+    let xnadded = `(${xaDisplaying} + ${xaName})`;
+    if(Object.keys(xaList).includes(xnadded)){
+        xnadded += `-${Object.keys(xaList).length}`;
+    }
     let xa1 = xaList[xan1];
     let xa2 = xaList[xan2];
     let xa_to_add = [xa1, xa2];
     let xa_added = addSchedules(xa_to_add);
-    Make_New_xa(xnadded);
     xaList[xnadded] = xa_added;
-    Update_xaTable(xaList[xaDisplaying]);
+    Update_xaData();
+    Add_xaLi(xnadded);
+    Update_xaDisplay(xnadded);
 }
 function addSchedules(schedules = []){
     if(schedules.length < 1){
@@ -807,3 +1137,4 @@ function addSchedules(schedules = []){
     }
     return addedSchedules;
 }
+

@@ -53,6 +53,17 @@
     --boxeff-to-replace: 0 0 0 0 transparent;
     --txtclr-to-replace: var(--text-clr);
     --transform-to-replace: scale(1);
+
+    --shadowline: 0px 0px 4px 2px #fff;
+    --shadowline-c: 0px 0px 0px 1px #28f;
+    --shadowline-m: 0px 0px 0px 1px #f28;
+    --shadowline-y: 0px 0px 0px 1px #ff5;
+    --shadowline-k: 0px 0px 0px 1px #0000;
+
+    --shadowline-c: 0px 0px 0px 1px #28f0;
+    --shadowline-m: 0px 0px 0px 1px #f280;
+    --shadowline-y: 0px 0px 0px 1px #ff50;
+    --shadowline-k: 0px 0px 0px 1px #0000;
 }
 
 body {
@@ -103,6 +114,10 @@ header{
     width: max-content;
     margin: 4px;
     margin-left: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: right;
 }
 .nav {
     height: auto;
@@ -157,7 +172,6 @@ header{
 
 
 
-
 /* .prompt {
     position: absolute;
     top: 5vh; left: 5vw;
@@ -177,6 +191,211 @@ header{
     display: grid;
     grid-auto-flow: row;
 } */
+.npc-view {
+    position: absolute;
+    top: 5vh; left: 5vw;
+    height: 90vh; width: 90vw;
+
+    /* font-family: 'Alegreya', serif; */
+    /* color: hsla(43, 75%, 20%, 100%); */
+
+    /* background-color: hsl(43, 43%, 72%); */
+    /* background-image: 
+        radial-gradient(to bottom, 
+            hsla(43, 43%, 72%, 0%) 50%, 
+            hsla(43, 43%, 40%, 50%) 75%
+        ); */
+    /* box-shadow: inset 0 0 5px 2px hsla(43, 43%, 72%, 50%); */
+
+    /* display: grid; */
+    /* grid-auto-flow: row; */
+    /* outline: 1px solid #f28; */
+    /* box-shadow: var(--shadowline); */
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.npc-card {
+    height: 60vh; width: 240px;
+    display: grid;
+    grid-auto-flow: row;
+    grid-gap: 50px;
+
+    padding: 8px;
+    border-radius: 10px;
+
+    font-family: 'Alegreya', serif;
+    color: white;
+
+    background: #fff0;
+    box-shadow:
+        inset 0 0 0px 1px #0aff,
+        inset 0 0 2px 1px #0afa,
+        inset 0 0 4px 1px #0af5,
+        inset 0 0 10px 5px #0af2,
+        0 0 0px 1px #0aff,
+        0 0 2px 2px #0afa,
+        0 0 4px 3px #0af5,
+        0 0 10px 5px #0af2;
+    
+    text-align: center;
+    align-items: center;
+    justify-items: center;
+}
+
+.npc-card > *{
+    box-shadow: var(--shadowline-m);
+    width: 90%;
+    /* margin: 12px auto; */
+    /* justify-self: center; */
+}
+
+.npc-card > .title {
+    height: max-content;
+    font-size: 36px;
+    /* font-family: 'Alegreya', serif; */
+    font-family: 'Ubuntu', sans-serif;
+    align-self: end;
+}
+
+.npc-ui {
+    display: grid;
+    grid-auto-flow: row;
+    grid-gap: 12px;
+
+    padding: 8px;
+    border-radius: 10px;
+
+    font-family: 'Alegreya', serif;
+    color: white;
+
+    background: #fff2;
+    /* box-shadow:
+        inset 0 0 0px 1px #0aff,
+        inset 0 0 2px 1px #0afa,
+        inset 0 0 4px 1px #0af5,
+        inset 0 0 10px 5px #0af2,
+        0 0 0px 1px #0aff,
+        0 0 2px 2px #0afa,
+        0 0 4px 3px #0af5,
+        0 0 10px 5px #0af2; */
+    align-self: start;
+    
+    text-align: center;
+    align-items: center;
+    justify-items: center;
+}
+
+.npc-ui > *{
+    box-shadow: var(--shadowline-y);
+    width: 90%;
+    /* margin: 12px auto; */
+    /* justify-self: center; */
+}
+
+.npc-card .prompt {
+    margin-top: 4px;
+    color: #defd;
+}
+.adventurer-input-name {
+    height: 32px;
+}
+.input-turned-off {
+    user-select: none;
+    cursor: not-allowed;
+}
+.input-fade {
+    /* user-select: none;
+    cursor: not-allowed; */
+    opacity: 0;
+    transform: translateX(-1000px);
+    transition: opacity 1000ms ease-in-out 500ms,
+    transform 2000ms ease-in-out 1000ms;
+}
+.actions {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 8px;
+    grid-auto-rows: minmax(24px, 48px);
+}
+.actions > button {
+    width: 80px;
+    justify-self: center;
+}
+.my-name-is { 
+    background-color: hsl(220, 54%, 45%);
+    border: 3px outset hsl(228, 71%, 32%);
+    color: hsl(228, 54%, 89%);
+    height: max-content;
+    margin: 1px 0px;
+    padding: 4px 8px;
+    text-shadow: 1px 1px 1px #0008;
+    border-radius: 15px;
+    font-weight: 600;
+    transition: background-color 100ms ease-in-out, border-radius 200ms ease-in-out;
+}
+.my-name-is:hover {
+    border-radius: 5px;
+    background-color: hsl(220, 72%, 54%);
+    transition: background-color 100ms ease-in-out, border-radius 200ms ease-in-out;
+}
+.action-turned-off {
+    background-color: #222;
+    color: #aaa;
+    user-select: none;
+    cursor: not-allowed;
+    border-color: #0000;
+    transition: color 400ms ease-in-out 100ms,
+    background-color 400ms ease-in-out 100ms;
+}
+.my-name-is:is(.action-turned-off):hover {
+    background-color: #0000;
+}
+.no-name { 
+    background-color: #0008;
+    color: #cccf;
+    border: 4px double #999f;
+    padding: 4px 8px;
+    justify-self: center;
+    height: max-content;
+    transition: border-radius 400ms ease-in-out;
+}
+.no-name:hover {
+    background-color: #2220;
+    color: #ccca;
+    border-radius: 15px;
+    transition: 
+    border-radius 400ms ease-in-out, 
+    background-color 800ms ease-in-out 300ms, 
+    color 800ms ease-in-out 300ms;
+}
+
+.secret-name { 
+    background-color: hsl(120, 54%, 16%);
+    border: 4px double hsl(137, 54%, 28%);
+    color: hsl(137, 54%, 64%);
+}
+/* .secret-name { 
+    --btn-bg: hsl(120, 54%, 16%);
+    --btn-border: 4px double hsl(137, 54%, 28%);
+    --btn-clr: hsl(137, 54%, 64%);
+}
+.my-name-is { 
+    --btn-bg: hsl(220, 54%, 45%);
+    --btn-border: 2px outset hsl(228, 71%, 32%);
+    --btn-clr: #fff;
+}
+.no-name { 
+    --btn-bg: #0008;
+    --btn-clr: #cccf;
+    --btn-border: 2px dashed #999f;
+    grid-column: 1 / 3;
+    width: max-content;
+    justify-self: center;
+    height: max-content;
+} */
+
 
 
 
