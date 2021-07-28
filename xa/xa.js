@@ -377,7 +377,6 @@ function Rename_xaLi(xali_id, xali_new_id){
     xali_elem.id = `xali-${xali_new_id}`;
     xali_elem.dataset.xali = i;
     xali_elem.children[1].innerHTML = xali_new_id;
-    // xali_elem.children[1].dataset.xaliToggle = xali_new_id;
 }
 function Add_xaLi(xali_id){
     let xal_list = document.getElementById('xali_ol');
@@ -479,10 +478,6 @@ window.addEventListener("click", (ev) =>{
         } else {
             console.log(`xaliName: •${xaliName}• → xaliToggle: false`);
         }
-
-        // console.log(` ── 📯Click! - New Schedule 📅 ── `);
-        // console.log(`data-xali-toggle = ${ev.target.dataset.xaliToggle}`);
-        // Update_xaDisplay(ev.target.dataset.xaliToggle);
     }
     if(ev.target.dataset.save != null){
         console.log(` ── 📯Click! - Saving 💾 ── `);
@@ -529,9 +524,6 @@ window.addEventListener("click", (ev) =>{
             delete xaList[xaliName];
             Remove_xaLi(xaliName);
             Update_xaData();
-            
-            // delete xaList[ev.target.dataset.del];
-            // Update_xaList(xaList);
             console.log(`💥 ${ev.target.dataset.del} was deleted.`)
         } else {
             console.log(`⛔Denied, because ${ev.target.dataset.del} is being displayed or the main one. ── `);
@@ -642,27 +634,8 @@ function WhoAreYou(){
 function WhoAreYou2(){
     let AdventurerName = 'Adventurer';
     npcContainer.classList.remove('hidden');
-
     // npcContainer.innerHTML = ``;
     console.log("Ready!");
-
-    // let name = window.prompt(`Before we continue, I need to ask, what's your name?`);
-    // if(name == null){
-    //     console.log(`No name?, ok, I'll call you ${AdventurerName} then.`);
-    //     window.alert(`No name?, ok, I'll call you ${AdventurerName} then.`);
-    // } else if(name.length == 7){
-    //     AdventurerName = name;
-    //     console.log(`*gasps* Breathtaking. Nice to meet you ${AdventurerName}!`);
-    // } else if(name.length%2 == 0){
-    //     AdventurerName = name;
-    //     console.log(`I like how it sounds. Nice to meet you ${AdventurerName}!`);
-    // } else {
-    //     AdventurerName = name;
-    //     console.log(`Never heard of someone named ${AdventurerName}. That is an odd name.`);
-    // }
-    // if(AdventurerName != "Adventurer") {
-    //     console.log(`Achivement Complete: You are now known as ${AdventurerName}.`);
-    // }
     return AdventurerName;
 }
 // ♦ ─────────────── ♦ ─────────────── ♦ ─────────────── ♦
@@ -734,7 +707,6 @@ function WelcomeBackAdventurer(){
     document.getElementById('welcome-msg').innerHTML = `Welcome back ${Adventurer}.`;
 }
 function Update_xaDisplay(newView){
-    // Switch_Update_xaList(newView);
     Switch_xaList(newView)
     xaDisplaying = newView;
     Update_xaTable(xaList[xaDisplaying]);
@@ -787,7 +759,7 @@ function Rename_xaTitle(){
     console.log(`xaDisplaying: ${xaDisplaying}`);
     let previous_name = xaDisplaying;
     console.log(`previous_name: ${previous_name}`);
-    // console.log(xaList[xaDisplaying]);
+    console.log(xaList[xaDisplaying]);
     let input_title = document.getElementById(`xae_title`);
     let new_name = input_title.value;
     console.log(`new_name: ${new_name}`);
@@ -827,7 +799,6 @@ function Make_New_xa(xaName = ''){
     xaList[xaDisplaying] = Build_xaArray();
     Update_xaData();
     Update_xaTable(xaList[xaDisplaying]);
-    // Update_xaList(xaList);
     Add_xaLi(xaDisplaying);
 
     
@@ -837,22 +808,6 @@ function Make_New_xa(xaName = ''){
     xaList[xaName] = Build_xaArray();
     Update_xaData();
     document.getElementById('welcome-msg').innerHTML = ``;
-}
-function Make_New_xa2(xaName = '', xaTable = []){
-    let xaListLen = Object.keys(xaList).length;
-    // console.log(xaListLen);
-    if(xaName == ''){
-        xaName = `Untitled-${xaListLen}`;
-    }
-    if(xaTable.length == 0){    
-        xaList[xaName] = Build_xaArray();
-    } else {
-        xaList[xaName] = xaTable;
-    }
-    Update_xaData();
-
-    Update_xaTable(xaList[xaDisplaying]);
-    // Update_xaList(xaList);
 }
 function consoleAll(){
     console.log(`♦───────────────♦`);
@@ -1043,7 +998,6 @@ function table_xa7d(xc){
     Object.keys(hh).forEach(k => {
         xha.push(hh[k][1]);
     });
-    // return hh; // return xha; // return [hh,xha];
     return xha;
 }
 function string_xa7d(xc){
@@ -1137,4 +1091,3 @@ function addSchedules(schedules = []){
     }
     return addedSchedules;
 }
-

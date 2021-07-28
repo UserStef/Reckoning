@@ -8,7 +8,7 @@
 .slow-hide * {
     background-color: #0000;
     color: #0000;
-    opacity: 0.2;
+    opacity: 0;
     transition: 
     background-color 500ms ease-in-out 500ms, 
     opacity 1000ms ease-in-out 1000ms,
