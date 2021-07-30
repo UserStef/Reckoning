@@ -1,0 +1,344 @@
+
+
+:root {
+    --box-shw-2a: 
+    -25px -25px 0px -20px hsla(180, 100%, 50%, 100%),
+    25px 25px 0px -20px hsla(300, 100%, 50%, 100%),
+    0px 0px 0px 2.5px hsla(60, 100%, 50%, 100%);
+    --box-shw-2b: 
+    -25px -25px 5px -20px hsla(180, 100%, 50%, 100%),
+    25px 25px 5px -20px hsla(300, 100%, 50%, 100%),
+    0px 0px 10px 2.5px hsla(60, 100%, 50%, 100%);
+    --box-shw-2e: 
+    -24px -24px 5px -20px hsla(180, 100%, 50%, 80%),
+    24px 24px 5px -20px hsla(300, 100%, 50%, 80%),
+    0px 0px 5px 1px hsla(60, 100%, 50%, 80%);
+
+
+}
+
+#all-content {
+    position: relative;
+    top: 0px;
+    height: calc(100vh - 32px);
+    width: 100vw;
+    overflow: scroll;
+    box-shadow: 
+    inset 0px 0px 0px 1px #fc2,
+    inset 0px 0px 0px 2px #000,
+    inset 0px 0px 0px 3px #fc2;
+}
+
+
+.default-view {
+    height: 85vh; width: 79vw;
+    /* margin: 1.9vh auto; */
+    margin: calc((15vh - 78px)/2) auto;
+    
+    /* padding: 8px; */
+    border-radius: 10px;
+    /* border: 4px double var(--hcx); */
+
+    background: #fff0;
+    box-shadow:
+        inset 0 0 0px 1px #0aff,
+        inset 0 0 2px 1px #0afa,
+        inset 0 0 4px 1px #0af5,
+        inset 0 0 10px 5px #0af2,
+        0 0 0px 1px #0aff,
+        0 0 2px 2px #0afa,
+        0 0 4px 3px #0af5,
+        0 0 10px 5px #0af2;
+
+    position: relative;
+}
+
+
+.npc-view {
+    position: absolute;
+    top: 5vh; left: 5vw;
+    height: 90vh; width: 90vw;
+
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.npc-card {
+    height: 60vh; width: 240px;
+    display: grid;
+    grid-auto-flow: row;
+    grid-gap: 50px;
+
+    padding: 8px;
+    border-radius: 10px;
+
+    font-family: 'Alegreya', serif;
+    color: white;
+
+    background: #fff0;
+    box-shadow:
+        inset 0 0 0px 1px #0aff,
+        inset 0 0 2px 1px #0afa,
+        inset 0 0 4px 1px #0af5,
+        inset 0 0 10px 5px #0af2,
+        0 0 0px 1px #0aff,
+        0 0 2px 2px #0afa,
+        0 0 4px 3px #0af5,
+        0 0 10px 5px #0af2;
+    
+    text-align: center;
+    align-items: center;
+    justify-items: center;
+}
+
+.npc-card > *{
+    box-shadow: var(--shadowline-m);
+    width: 90%;
+}
+
+.npc-card > .title {
+    height: max-content;
+    font-size: 36px;
+    font-family: 'Ubuntu', sans-serif;
+    align-self: end;
+}
+
+.npc-ui {
+    display: grid;
+    grid-auto-flow: row;
+    grid-gap: 12px;
+
+    padding: 8px;
+    border-radius: 10px;
+
+    font-family: 'Alegreya', serif;
+    color: white;
+
+    background: #fff2;
+    align-self: start;
+    
+    text-align: center;
+    align-items: center;
+    justify-items: center;
+}
+
+.npc-ui > *{
+    box-shadow: var(--shadowline-y);
+    width: 90%;
+}
+
+.npc-card .prompt {
+    margin-top: 4px;
+    color: #defd;
+}
+.adventurer-input-name {
+    height: 32px;
+}
+.input-turned-off {
+    user-select: none;
+    cursor: not-allowed;
+}
+.input-fade {
+    opacity: 0;
+    transform: translateX(-1000px);
+    transition: opacity 1000ms ease-in-out 500ms,
+    transform 2000ms ease-in-out 1000ms;
+}
+.actions {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 8px;
+    grid-auto-rows: minmax(24px, 48px);
+}
+.actions > button {
+    width: 80px;
+    justify-self: center;
+}
+.my-name-is { 
+    background-color: hsl(220, 54%, 45%);
+    border: 3px outset hsl(228, 71%, 32%);
+    color: hsl(228, 54%, 89%);
+    height: max-content;
+    margin: 1px 0px;
+    padding: 4px 8px;
+    text-shadow: 1px 1px 1px #0008;
+    border-radius: 15px;
+    font-weight: 600;
+    transition: background-color 100ms ease-in-out, border-radius 200ms ease-in-out;
+}
+.my-name-is:hover {
+    border-radius: 5px;
+    background-color: hsl(220, 72%, 54%);
+    transition: background-color 100ms ease-in-out, border-radius 200ms ease-in-out;
+}
+.action-turned-off {
+    background-color: #222;
+    color: #aaa;
+    user-select: none;
+    cursor: not-allowed;
+    border-color: #0000;
+    transition: color 400ms ease-in-out 100ms,
+    background-color 400ms ease-in-out 100ms;
+}
+.my-name-is:is(.action-turned-off):hover {
+    background-color: #0000;
+}
+.no-name { 
+    background-color: #0008;
+    color: #cccf;
+    border: 4px double #999f;
+    padding: 4px 8px;
+    justify-self: center;
+    height: max-content;
+    transition: border-radius 400ms ease-in-out;
+}
+.no-name:hover {
+    background-color: #2220;
+    color: #ccca;
+    border-radius: 15px;
+    transition: 
+    border-radius 400ms ease-in-out, 
+    background-color 800ms ease-in-out 300ms, 
+    color 800ms ease-in-out 300ms;
+}
+
+.secret-name { 
+    background-color: hsl(120, 54%, 16%);
+    border: 4px double hsl(137, 54%, 28%);
+    color: hsl(137, 54%, 64%);
+}
+
+
+
+/* .npc-view {
+    position: absolute;
+    top: 5vh; left: 5vw;
+    height: 90vh; width: 90vw;
+
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.xaView {
+    max-height: var(--xav-h);
+    height: max-content; width: var(--xav-w);
+    margin: 0px auto;
+    display: grid;
+    grid-auto-flow: column;
+    grid-gap: 0px;
+} */
+
+
+
+/* .xView {
+    position: relative;
+    height: calc(100vh - 32px);
+} */
+
+.xdelView {
+    height: calc(96vh - 32px);
+    width: 96vw;
+    margin: 2vh 2vw;
+    /* box-shadow: var(--box-shw-2b); */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* flex-direction: column; */
+}
+
+.xdel-card{
+    height: 60vh; width: 240px;
+    /* display: grid;
+    grid-auto-flow: row;
+    grid-gap: 50px; */
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    padding: 8px;
+    border-radius: 10px;
+
+    font-family: 'Alegreya', serif;
+    color: white;
+
+    background: #fff0;
+    box-shadow:
+        inset 0 0 0px 1px #925f,
+        inset 0 0 2px 1px #925a,
+        inset 0 0 4px 1px #9255,
+        inset 0 0 10px 5px #9252,
+        0 0 0px 1px #925f,
+        0 0 2px 2px #925a,
+        0 0 4px 3px #9255,
+        0 0 10px 5px #9252;
+    
+    text-align: center;
+    /* align-items: center;
+    justify-items: center; */
+}
+
+.xdel-card > .title {
+    height: max-content;
+    font-size: 36px;
+    font-family: 'Ubuntu', sans-serif;
+    /* color: #925d; */
+    color: #c25f;
+    text-shadow: 
+    2px 2px 1px #512f, 
+    0 0 5px #f28a, 
+    0 0 8px #fff2;
+    /* align-self: end; */
+}
+
+
+
+.xdel-prompt {
+    margin-top: 4px;
+    color: #defd;
+}
+.xdel-prompt span {
+    color: #c25f;
+}
+
+.delete-input-name {
+    height: 32px;
+    margin: 4px auto;
+}
+
+button[class|="xdel-btn"] {
+    height: max-content;
+    margin: 4px 0px;
+    padding: 4px 8px;
+    text-shadow: 1px 1px 1px #0008;
+    border-radius: 15px;
+    font-weight: 600;
+    cursor: pointer;
+}
+.xdel-btn-close {
+    background-color: hsl(0, 0%, 24%);
+    border: 3px outset hsl(0, 0%, 12%);
+    color: hsl(228, 54%, 89%);
+    transition: background-color 100ms ease-in-out, border-radius 200ms ease-in-out;
+}
+.xdel-btn-close:hover {
+    border-radius: 5px;
+    background-color: hsl(0, 0%, 36%);
+    transition: background-color 100ms ease-in-out, border-radius 200ms ease-in-out;
+}
+
+.xdel-btn-delete {
+    background-color: hsl(0, 54%, 45%);
+    border: 3px outset hsl(0, 71%, 32%);
+    color: hsl(228, 54%, 89%);
+    transition: background-color 100ms ease-in-out, border-radius 200ms ease-in-out;
+}
+.xdel-btn-delete:hover {
+    border-radius: 5px;
+    background-color: hsl(0, 72%, 54%);
+    transition: background-color 100ms ease-in-out, border-radius 200ms ease-in-out;
+}

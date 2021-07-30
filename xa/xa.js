@@ -15,29 +15,34 @@ const availability = {
     "4": "Optimal", 
     "5": "Decided"
 }
-var xaContainer = document.getElementById('xa');
+var viewList = {};
+// viewList['xa'] = document.getElementById('xa');
+// viewList['npc'] = document.getElementById('npc');
+// viewList['xdel'] = document.getElementById('xdel');
+var xaContainer = document.getElementById('xac');
 var npcContainer = document.getElementById('npc');
+var xEraseDataContainer = document.getElementById('xdel');
 var Adventurer = ''; /* Name of the User */
 var CurrentView = ''; /* What view they are looking at. */
 var xaDisplaying = ''; /* Which of their Availability Schedules they are seeing. */
-let xaTable = [];
+// let xaTable = [];
 let xaList = {};
 let welcome_msg_status = `welcome`;
 function Load_fromLocal(key) {
     let project_key = `reckoning-${key}`;
     if (localStorage.getItem(project_key)) {
         data[key] = JSON.parse(localStorage.getItem(project_key));
-        console.log(`♦ {${key}} found.`);
+        console.log(`[✓] {${key}} found. 📤`);
         return true;
     } else {
-        console.log(`♦ No {${key}} were found.`);
+        console.log(`[✗] No {${key}} were found. 💢`);
         return false;
     }
 }
 function Save_toLocal(key) {
     let project_key = `reckoning-${key}`;
     localStorage.setItem(project_key, JSON.stringify(data[key]));
-    console.log(`♦ {${key}} has been saved.`);
+    console.log(`[✓] {${key}} has been saved. 📥`);
 }
 function table_xa(xc) {
     let xch = xc.split(',');
@@ -320,6 +325,7 @@ function Build_xaList_ol(newList){
 function Build_xaList(list){
     let xal = document.createElement('div');
     xal.classList.add('xal');
+    xal.id = 'xal';
     let xal_title = document.createElement("div");
     xal_title.classList.add('xal-title');
     xal_title.id = 'xal_title';
@@ -436,6 +442,9 @@ window.addEventListener("click", (ev) =>{
         let welcome = document.getElementById('welcome');
         welcome.classList.toggle('hidden');
     }
+    if(ev.target.dataset.nav != null){
+        switchViewTo(ev.target.dataset.nav);
+    }
     if(ev.target.dataset.xas != null){
         let xaSelection = ev.target.dataset.xas;
         console.log(` ── 📯Click! - Selection ${xaSelection} ── `);
@@ -535,14 +544,16 @@ window.addEventListener("click", (ev) =>{
         shareURL();
     }
     if(ev.target.dataset.adventurerName != null){
+        let npcPrompt = document.getElementById('npc-prompt');
         if(ev.target.dataset.adventurerName == "yes"){
             let AdventurerNameInput = document.getElementById('adventurer-input-name');
-            let npcPrompt = document.getElementById('npc-prompt');
             let AdventurerName = AdventurerNameInput.value.trim();
             if(AdventurerName != ""){
                 console.log(`AdventurerName = ~${AdventurerName}~`);
                 npcContainer.classList.add('slow-hide');
                 setNewAdventurer(AdventurerName);
+
+                resetNPC();
             } else {
                 if(ev.target.dataset.again == null){
                     console.log(`Err0: AdventurerName is empty.`);
@@ -594,17 +605,33 @@ window.addEventListener("click", (ev) =>{
 
                     setNewAdventurer('Annoying');
                     window.setTimeout(() => {
-                        console.log('Ready to fade form.')
+                        console.log('Ready to fade form.');
                         npcContainer.classList.add('slow-hide');
                     }, 3000);
+
+                    resetNPC();
                 }
             }
-
         } else if(ev.target.dataset.adventurerName == "no"){
             npcPrompt.innerHTML = `Ok, I'll just call you "Adventurer".`;
-            setNewAdventurer("Adventurer");
-            npcContainer.classList.add('slow-hide');
+            window.setTimeout(() => {
+                console.log('Ready to fade...');
+
+                setNewAdventurer("Adventurer");
+                npcContainer.classList.add('slow-hide');
+
+                resetNPC();
+            }, 3000);
         }
+    }
+    if(ev.target.dataset.xdelAllData != null){
+        console.log(` ── 🚨 Delete All Data! ❗ ── `);
+        console.log(`dataset: ${ev.target.dataset.xdelAllData}`);
+
+        RequestErase(ev);
+    }
+    if(ev.target.dataset.closeXdel != null){
+        switchViewTo('home');
     }
 });
 
@@ -644,45 +671,114 @@ function WhoAreYou2(){
 window.addEventListener('load', async () =>{
     console.log(" -- Start of load event. -- ");
     console.log(`Current Day and Time: \n\t${xo.toLocaleString()}`);
+    viewList['home'] = document.getElementById('nav');
+    viewList['xa'] = document.getElementById('xaView');
+    viewList['xac'] = document.getElementById('xac');
+    viewList['npc'] = document.getElementById('npc');
+    viewList['xdel'] = document.getElementById('xdel');
+    
+    console.log(`→ 'viewList' is ready!`);
     
     xaContainer.appendChild(Make_xaTable());
-    if(Load_fromLocal("user")){
-        WelcomeBackAdventurer();
-        console.log(`Welcome back ${Adventurer}.`);
-        AdventurerReadyNowUpdate();
-    } else {
-        console.log("Welcome adventurer!");
-        npcContainer.classList.remove('hidden');
-    }
+    HaveYouBeenHereBefore();
+
+    // if(Load_fromLocal("user")){
+    //     WelcomeBackAdventurer();
+    //     console.log(`Welcome back ${Adventurer}.`);
+    //     AdventurerReadyNowUpdate();
+    // } else {
+    //     console.log("Welcome adventurer!");
+    //     npcContainer.classList.remove('hidden');
+    // }
 
     console.log(" -- End of load event. -- ");
 });
 // ♦ ─────────────── ♦ ─────────────── ♦ ─────────────── ♦
 // ♦ ─────────────── ♦ ─────────────── ♦ ─────────────── ♦
 // ♦ ─────────────── ♦ ─────────────── ♦ ─────────────── ♦
+function HaveYouBeenHereBefore(){
+    if(Load_fromLocal("user")){
+        Adventurer = data['user']['name'];
+        xaDisplaying = data['user']['xaDisplaying'];
+        document.getElementById('welcome-msg').innerHTML = `Welcome back ${Adventurer}.`;
+
+        console.log(`Welcome back ${Adventurer}.`);
+        console.log(`This is your data:`);
+        console.log(data['user']);
+
+        console.log(`\n\tAnalizing...\n\t`);
+        
+        if(data['user']['xaVersion'] != null){
+            let xaVersion = data['user']['xaVersion'];
+            console.log(`The 'xaVersion' is set to ${xaVersion}.`);
+        } else {
+            console.log(`♦Err♦ - There is no 'xaVersion' in the user's data.`);
+            // console.log(`Starting 'xaVersion'`);
+            switchViewTo('xdel');
+        }
+
+        if(data['user']['xaEncode'] != null){
+            let xaEncode = data['user']['xaEncode'];
+            console.log(`The 'xaEncode' is set to ${xaEncode}.`);
+        } else {
+            console.log(`♦Err♦ - There is no 'xaEncode' in the user's data.`);
+            // console.log(`Starting 'xaEncode'`);
+            switchViewTo('xdel');
+        }
+
+        if(data['user']['xaVersion'] != null && data['user']['xaEncode'] != null){
+            Load_fromLocal('xaList');
+            if(data['xaList'] != null){
+                let xaList = data['xaList'];
+                console.log(`The 'xaList' contains:`);
+                console.log(data['xaList']);
+                Decode_xaList();
+                WelcomeBackAdventurer();
+                AdventurerReadyNowUpdate();
+            } else {
+                console.log(`♦Err♦ - There is no 'xaList' in the user's data.`);
+                switchViewTo('npc');
+            }
+        }
+        
+    } else {
+        console.log("Welcome adventurer!");
+        switchViewTo('npc');
+    }
+}
 function setNewAdventurer(AdventurerName){
     Adventurer = AdventurerName;
     console.log(`Adventurer: ${Adventurer}.`);
     xaDisplaying = Adventurer;
     console.log(`xaDisplaying: ${xaDisplaying}`);
     data['user'] = {};
-    data['user']['CurrentView'] = 'xa';
+    data['user']['CurrentView'] = '';
     data['user']['main_xa_id'] = Adventurer;
+    data['user']['xaVersion'] = 'xa7c';
+    data['user']['xaEncode'] = 'xa7c';
     data['xaList'] = {};
     xaList[xaDisplaying] = Build_xaArray();
     console.log(xaList);
-    updateUser();
+    UpdateAllLocal();
     AdventurerReadyNowUpdate();
 }
-function updateUser(){
+function UpdateUser(){
     data['user']['name'] = Adventurer;
     data['user']['xaDisplaying'] = xaDisplaying;
-    data['user']['main_xa'] = string_xa7c(xaList[xaDisplaying]);
-    data['user']['xaEncode'] = "xa7c";
-    Encode_xaList();
-    console.log(data);
+    data['user']['CurrentView'] = CurrentView;
+    // data['user']['main_xa_id'] = Main_xa_id;
+    // data['user']['xaEncode'] = "xa7c";
+
     Save_toLocal('user');
+    console.log(data['user']);
+}
+function UpdateAllLocal(){
+    UpdateUser();
+
+    Encode_xaList();
     Save_toLocal('xaList');
+
+    console.log(data);
 }
 function AdventurerReadyNowUpdate(){
     let xaQ = document.URL.toString()
@@ -694,10 +790,8 @@ function AdventurerReadyNowUpdate(){
         xaDisplaying = Object.keys(xaList)[0];
     }
     Update_xaTable(xaList[xaDisplaying]);
-    xaContainer.classList.remove('hidden');
-    var xaView = document.getElementById('xaView');
-    let xaNameList = xaList;
-    xaView.appendChild(Build_xaList(xaNameList));
+    switchViewTo('xa');
+    viewList['xa'].appendChild(Build_xaList(xaList));
 }
 function WelcomeBackAdventurer(){
     Load_fromLocal('xaList');
@@ -724,12 +818,10 @@ function Update_xaData(){
 function Encode_xaList(){
     // console.log(xaList);
     data['xaList'] = {};
-    data['user']['xaEncode'] = "xa7c";
     Object.keys(xaList).forEach(xat => {
         if(xat != 'temp'){
             console.log(`♦${xat}`);
             // console.table(xaList[xat]);
-            // data['xaList'][xat] = string_xa(xaList[xat]);
             data['xaList'][xat] = string_xa7c(xaList[xat]);
             // console.table(data['xaList'][xat]);
         }
@@ -741,18 +833,22 @@ function Encode_xaList(){
 }
 function Decode_xaList(){
     let xaEncode = data['user']['xaEncode'];
-    Object.keys(data['xaList']).forEach(xat => {
-        if(xaEncode == "xa7c"){
-        // if(xaEncode == null){
-            xaList[xat] = table_xa7c(data['xaList'][xat]);
-        } else {
-            xaList[xat] = table_xa(data['xaList'][xat]);
-        }
-    });
-    // console.log(Object.keys(xaList));
-    // console.log(xaList);
-    console.log(Object.keys(data['xaList']));
-    console.log(data['xaList']);
+    if(xaEncode == null){
+        switchViewTo('xdel');
+    } else {
+        Object.keys(data['xaList']).forEach(xat => {
+            if(xaEncode == "xa7c"){
+            // if(xaEncode == null){
+                xaList[xat] = table_xa7c(data['xaList'][xat]);
+            } else {
+                xaList[xat] = table_xa(data['xaList'][xat]);
+            }
+        });
+        // console.log(Object.keys(xaList));
+        // console.log(xaList);
+        console.log(Object.keys(data['xaList']));
+        console.log(data['xaList']);
+    }
 }
 function Rename_xaTitle(){
     console.log(`♦───♦ Rename_xaTitle(){ ♦───♦`);
@@ -1126,4 +1222,250 @@ function nextName(xaName, count = 1, preName = 'err'){
     }
     // console.log(` → xaNextName: ${xaNextName}`);
     return xaNextName;
+}
+
+function AdventurerName(ev){
+    if(ev.target.dataset.adventurerName != null){
+        if(ev.target.dataset.adventurerName == "yes"){
+            let AdventurerNameInput = document.getElementById('adventurer-input-name');
+            let npcPrompt = document.getElementById('npc-prompt');
+            let AdventurerName = AdventurerNameInput.value.trim();
+            if(AdventurerName != ""){
+                console.log(`AdventurerName = ~${AdventurerName}~`);
+                viewList['npc'].classList.add('slow-hide');
+                setNewAdventurer(AdventurerName);
+            } else {
+                if(ev.target.dataset.again == null){
+                    console.log(`Err0: AdventurerName is empty.`);
+                    npcPrompt.innerHTML = "What is your name?";
+                    AdventurerNameInput.placeholder = "Adventurer name here."
+                    ev.target.dataset.again = "1";
+                } else if(ev.target.dataset.again == "1"){
+                    console.log(`Err1: Adventurer doesn't have a name!`);
+                    npcPrompt.innerHTML = "Could you please write it down?";
+                    AdventurerNameInput.placeholder = " →  Here  ← "
+                    ev.target.dataset.again = "2";
+                } else if(ev.target.dataset.again == "2"){
+                    console.log(`Err2: Maybe the adventurer doesn't like his/her name.`);
+                    npcPrompt.innerHTML = `It doesn't have to be your name.`;
+                    AdventurerNameInput.placeholder = `Any name`;
+                    ev.target.dataset.again = "3";
+                } else if(ev.target.dataset.again == "3"){
+                    console.log(`Err3: Adventurer is missing the point.`);
+                    npcPrompt.innerHTML = `I'll write "Adventuter", ok?`;
+                    AdventurerNameInput.placeholder = `Did you came up with a name?`;
+                    AdventurerNameInput.value = "Adventurer"
+                    ev.target.dataset.again = "4";
+                } else if(ev.target.dataset.again == "4"){
+                    console.log(`Err4: Adventurer erased it.`);
+                    npcPrompt.innerHTML = `It can't be empty.`;
+                    AdventurerNameInput.placeholder = `Just write something, please.`;
+                    AdventurerNameInput.value = "Adventurer"
+                    ev.target.dataset.again = "5";
+                } else if(ev.target.dataset.again == "5"){
+                    console.log(`Err5: It is intentional`);
+                    npcPrompt.innerHTML = `Last chance.`;
+                    AdventurerNameInput.placeholder = `Adventurer Name`;
+                    ev.target.dataset.again = "6";
+                } else if(ev.target.dataset.again == "6"){
+                    console.log(`Err6: Now it is personal. No more chances.`);
+                    npcPrompt.innerHTML = `Ok, I'll just call you "Annoying".`;
+                    AdventurerNameInput.placeholder = `Adventurer Name`;
+                    AdventurerNameInput.value = "Annoying"
+                    ev.target.dataset.again = "9";
+                    AdventurerNameInput.disabled=true;
+                    AdventurerNameInput.classList.add('input-turned-off');
+                    ev.target.innerText = "No";
+
+                    window.setTimeout(() => {
+                        console.log('Fading button.')
+                        ev.target.classList.add('action-turned-off');
+                        ev.target.dataset.adventurerName = "no"
+                    }, 1000);
+
+                    setNewAdventurer('Annoying');
+                    window.setTimeout(() => {
+                        console.log('Ready to fade form.')
+                        viewList['npc'].classList.add('slow-hide');
+                    }, 3000);
+                }
+            }
+
+        } else if(ev.target.dataset.adventurerName == "no"){
+            npcPrompt.innerHTML = `Ok, I'll just call you "Adventurer".`;
+            setNewAdventurer("Adventurer");
+            viewList['npc'].classList.add('slow-hide');
+        }
+    }
+    window.setTimeout(() => {
+        console.log('[Reseting NPC]')
+        resetNPC()
+    }, 9000);
+}
+function resetNPC(){
+    console.log('[Reseting NPC on Hold]');
+    window.setTimeout(() => {
+        console.log('[Reseting NPC]');
+        viewList['npc'].innerHTML = '';
+        viewList['npc'].innerHTML = `
+        <div class="npc-card">
+            <div class="title">welcome</div>
+            <div class="npc-ui">
+                <div id="npc-prompt" class="prompt">May I ask what is your name?</div>
+                <input type="text" name="adventurer-input-name" id="adventurer-input-name" class="adventurer-input-name" minlength="1" maxlength="20">
+                <div class="actions">
+                    <button class="no-name" data-adventurer-name="no">No</button>
+                    <button class="my-name-is" data-adventurer-name="yes">Yes</button>
+                </div>
+            </div>
+        </div>`;
+    }, 9000);
+}
+
+function RequestErase(ev){
+    // if(ev.target.dataset.eraseData != null){
+    //     switchViewTo('xdel');
+    // }
+
+    // an input box to confirm their name.
+    let DeleteNameInput = document.getElementById('delete-input-name');
+    // DeleteNameInput.placeholder = Adventurer;
+    // a prompt to communicate with the user.
+    let xdelPrompt = document.getElementById('xdel-prompt');
+    let AdventurerName = DeleteNameInput.value.trim();
+
+    console.log(`AdventurerName: ${AdventurerName}`);
+
+    if(AdventurerName == ''){
+        if(ev.target.dataset.errCount == null){
+            xdelPrompt.innerHTML = `Please write your name (<span>${Adventurer}</span>) below to confirm.`;
+            ev.target.dataset.errCount = 1;
+        } else if(ev.target.dataset.errCount == 1){
+            xdelPrompt.innerHTML = `Nothing will be deleted if you leave it empty.`;
+            ev.target.dataset.errCount = 2;
+        } else if(ev.target.dataset.errCount == 2){
+            xdelPrompt.innerHTML = `We won't write it for you.`;
+            ev.target.dataset.errCount = 3;
+        } else if(ev.target.dataset.errCount == 3){
+            xdelPrompt.innerHTML = `Maybe this is not what you want.`;
+            ev.target.dataset.errCount = 4;
+        } else if(ev.target.dataset.errCount == 4){
+            xdelPrompt.innerHTML = `Ok, you can close this window with any button now.`;
+            ev.target.dataset.xdelAllData = null;
+            
+            window.setTimeout(() => {
+                DeleteNameInput.disabled=true;
+            }, 1000);
+            window.setTimeout(() => {
+                ev.target.dataset.closeXdel = 'true';
+                ev.target.innerHTML = `Close`;
+            }, 2000);
+
+            ev.target.dataset.errCount = 5;
+            Reset_xdel();
+        }
+    } else if(AdventurerName !== Adventurer){
+        if(ev.target.dataset.wrongCount == null) {
+            ev.target.dataset.wrongCount = 1;
+        }
+        if(ev.target.dataset.wrongCount < 5){
+            xdelPrompt.innerHTML = `Who is <span>${AdventurerName}</span>?, please write your name.`;
+            ev.target.dataset.wrongCount = 1 + (1*ev.target.dataset.wrongCount);
+            console.log(ev.target.dataset.wrongCount);
+        } else if(ev.target.dataset.wrongCount < 10){
+            xdelPrompt.innerHTML = `Your name is <span>${Adventurer}</span>. Just write that down.`;
+            ev.target.dataset.wrongCount = 1 + (1*ev.target.dataset.wrongCount);
+            console.log(ev.target.dataset.wrongCount);
+        } else {
+            xdelPrompt.innerHTML = `You might not be right person.`;
+            ev.target.dataset.xdelAllData = null;  
+            window.setTimeout(() => {
+                DeleteNameInput.disabled=true;
+            }, 1000);
+            window.setTimeout(() => {
+                ev.target.dataset.closeXdel = 'true';
+                ev.target.innerHTML = `Close`;
+            }, 2000);
+            ev.target.dataset.wrongCount = 12;
+            Reset_xdel();
+        }
+    } else {
+        Remove_fromLocal('xaList');
+        Remove_fromLocal('user');
+        xaList = {};
+        xaDisplaying = '';
+        Adventurer = '';
+        welcome_msg_status = `welcome`;
+        if(document.getElementById('xal') != null){
+            document.getElementById('xal').innerHTML = '';
+            document.getElementById('xal').remove();
+        }
+        switchViewTo('npc');
+        Reset_xdel();
+    }
+
+    // if(ev.target.dataset.eraseData == "deleteAll");
+    // if(ev.target.dataset.eraseData != null){}
+}
+function Reset_xdel(){
+    console.log('[Reseting xdel on Hold]');
+    window.setTimeout(() => {
+        console.log('[Reseting xdel]');
+        viewList['xdel'].innerHTML = '';
+        viewList['xdel'].innerHTML = `
+        <div class="xdel-card">
+            <div class="title">Start Over</div>
+            <div id="xdel-prompt" class="xdel-prompt">There is an error, we need to clear things up. Please write your name below to confirm.</div>
+            <input type="text" name="delete-input-name" id="delete-input-name" class="delete-input-name" minlength="1" maxlength="20">
+            <div class="actions">
+                <button data-close-xdel='true' class="xdel-btn-close">Close</button>
+                <button data-xdel-all-data='deleteAll' class="xdel-btn-delete">Delete</button>
+            </div>
+        </div>`;
+    }, 9000);
+
+}
+function Remove_fromLocal(key) {
+    let project_key = `reckoning-${key}`;
+    if (localStorage.getItem(project_key)) {
+        console.log(`[✓] {${key}} found. 💣`);
+        localStorage.removeItem(project_key);
+        delete data[key];
+        console.log(`[✓] {${key}} deleted. 💥`);
+        return true;
+    } else {
+        console.log(`[✗] No {${key}} were found. ⛔`);
+        return false;
+    }
+}
+
+function switchViewTo(switchTo){
+    console.log(`⧉ → view switch \nfrom: ${CurrentView} \nto: ${switchTo}`);
+
+    // ⧉ from [home] → [xa]
+    // ⧉ from [home] → [xdel]
+
+    // ⧉ from [xa] → [home]
+    // ⧉ from [xa] → [xdel]
+
+    // ⧉ from [xdel] → [home]
+
+    if(switchTo == 'xa'){
+        if(xaList.length == 0){
+            setNewAdventurer(Adventurer);
+        }
+    }
+    if(CurrentView != '') {
+        viewList[CurrentView].classList.add('hidden');
+    }
+    CurrentView = switchTo;
+
+    viewList[CurrentView].classList.remove('hidden');
+    if(Adventurer != ''){
+        UpdateUser();
+    }
+
+    if(switchTo == 'xdel'){
+        document.getElementById('delete-input-name').placeholder = Adventurer;
+    }
 }

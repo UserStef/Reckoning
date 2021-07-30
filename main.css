@@ -91,6 +91,7 @@ body {
 }
 
 header{
+    height: 28px;
     width: 100vw;
     display: flex;
     box-shadow: 0px 4px 4px #1119;
@@ -118,7 +119,7 @@ header{
 .nav {
     height: auto;
     width: 80%;
-    margin: 0 auto;
+    margin: 12px auto;
     display: grid;
     grid-auto-flow: column;
     grid-gap: 0px;
@@ -165,160 +166,6 @@ header{
 
 
 
-.npc-view {
-    position: absolute;
-    top: 5vh; left: 5vw;
-    height: 90vh; width: 90vw;
-
-    border-radius: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.npc-card {
-    height: 60vh; width: 240px;
-    display: grid;
-    grid-auto-flow: row;
-    grid-gap: 50px;
-
-    padding: 8px;
-    border-radius: 10px;
-
-    font-family: 'Alegreya', serif;
-    color: white;
-
-    background: #fff0;
-    box-shadow:
-        inset 0 0 0px 1px #0aff,
-        inset 0 0 2px 1px #0afa,
-        inset 0 0 4px 1px #0af5,
-        inset 0 0 10px 5px #0af2,
-        0 0 0px 1px #0aff,
-        0 0 2px 2px #0afa,
-        0 0 4px 3px #0af5,
-        0 0 10px 5px #0af2;
-    
-    text-align: center;
-    align-items: center;
-    justify-items: center;
-}
-
-.npc-card > *{
-    box-shadow: var(--shadowline-m);
-    width: 90%;
-}
-
-.npc-card > .title {
-    height: max-content;
-    font-size: 36px;
-    font-family: 'Ubuntu', sans-serif;
-    align-self: end;
-}
-
-.npc-ui {
-    display: grid;
-    grid-auto-flow: row;
-    grid-gap: 12px;
-
-    padding: 8px;
-    border-radius: 10px;
-
-    font-family: 'Alegreya', serif;
-    color: white;
-
-    background: #fff2;
-    align-self: start;
-    
-    text-align: center;
-    align-items: center;
-    justify-items: center;
-}
-
-.npc-ui > *{
-    box-shadow: var(--shadowline-y);
-    width: 90%;
-}
-
-.npc-card .prompt {
-    margin-top: 4px;
-    color: #defd;
-}
-.adventurer-input-name {
-    height: 32px;
-}
-.input-turned-off {
-    user-select: none;
-    cursor: not-allowed;
-}
-.input-fade {
-    opacity: 0;
-    transform: translateX(-1000px);
-    transition: opacity 1000ms ease-in-out 500ms,
-    transform 2000ms ease-in-out 1000ms;
-}
-.actions {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 8px;
-    grid-auto-rows: minmax(24px, 48px);
-}
-.actions > button {
-    width: 80px;
-    justify-self: center;
-}
-.my-name-is { 
-    background-color: hsl(220, 54%, 45%);
-    border: 3px outset hsl(228, 71%, 32%);
-    color: hsl(228, 54%, 89%);
-    height: max-content;
-    margin: 1px 0px;
-    padding: 4px 8px;
-    text-shadow: 1px 1px 1px #0008;
-    border-radius: 15px;
-    font-weight: 600;
-    transition: background-color 100ms ease-in-out, border-radius 200ms ease-in-out;
-}
-.my-name-is:hover {
-    border-radius: 5px;
-    background-color: hsl(220, 72%, 54%);
-    transition: background-color 100ms ease-in-out, border-radius 200ms ease-in-out;
-}
-.action-turned-off {
-    background-color: #222;
-    color: #aaa;
-    user-select: none;
-    cursor: not-allowed;
-    border-color: #0000;
-    transition: color 400ms ease-in-out 100ms,
-    background-color 400ms ease-in-out 100ms;
-}
-.my-name-is:is(.action-turned-off):hover {
-    background-color: #0000;
-}
-.no-name { 
-    background-color: #0008;
-    color: #cccf;
-    border: 4px double #999f;
-    padding: 4px 8px;
-    justify-self: center;
-    height: max-content;
-    transition: border-radius 400ms ease-in-out;
-}
-.no-name:hover {
-    background-color: #2220;
-    color: #ccca;
-    border-radius: 15px;
-    transition: 
-    border-radius 400ms ease-in-out, 
-    background-color 800ms ease-in-out 300ms, 
-    color 800ms ease-in-out 300ms;
-}
-
-.secret-name { 
-    background-color: hsl(120, 54%, 16%);
-    border: 4px double hsl(137, 54%, 28%);
-    color: hsl(137, 54%, 64%);
-}
 
 
 
@@ -332,43 +179,7 @@ header{
 
 
 
-.default-view {
-    height: 85vh; width: 79vw;
-    /* margin: 1.9vh auto; */
-    margin: calc((15vh - 78px)/2) auto;
-    
-    /* padding: 8px; */
-    border-radius: 10px;
-    /* border: 4px double var(--hcx); */
-
-    background: #fff0;
-    box-shadow:
-        inset 0 0 0px 1px #0aff,
-        inset 0 0 2px 1px #0afa,
-        inset 0 0 4px 1px #0af5,
-        inset 0 0 10px 5px #0af2,
-        0 0 0px 1px #0aff,
-        0 0 2px 2px #0afa,
-        0 0 4px 3px #0af5,
-        0 0 10px 5px #0af2;
-
-    position: relative;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.test {
+/* .test {
     height: var(--h);
     width: var(--w);
     
@@ -405,4 +216,4 @@ header{
 
     position: relative;
     top: 200px; left: 100px;
-}
+} */
